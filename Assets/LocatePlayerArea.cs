@@ -4,31 +4,36 @@ using UnityEngine;
 
 public class LocatePlayerArea : MonoBehaviour
 {
-    public GameObject sphere;
     private Camera mainCamera;
     private Vector3 centerOfWorld;
     private float radiusToSpawn;
     public float gridSpacing;
-    public static HashSet<Vector3> posGrid;
-    void Start()
+    public static HashSet<Vector3> originalPosGrid;    // Зарезервированные, для сброса posGrid - позиции
+    public static HashSet<Vector3> posGrid;     //Готовые позиции для вычитания
+    //public static HashSet<Vector3> usedPosGrid;     //Испольщованные позиции
+    public static Vector3[] toLaunchedPos;
+    
+
+    private void Awake()
     {
         posGrid = new HashSet<Vector3>();
+        //usedPosGrid = new HashSet<Vector3>();
         mainCamera = this.gameObject.GetComponent<Camera>();
-        Vector2 centerOfScreen = new Vector2(mainCamera.pixelWidth/2, mainCamera.pixelHeight/2);
-        Vector3 centerPos = mainCamera.ScreenToWorldPoint(new Vector3( centerOfScreen.x, centerOfScreen.y, mainCamera.nearClipPlane - mainCamera.transform.position.z));
+        Vector2 centerOfScreen = new Vector2(mainCamera.pixelWidth / 2, mainCamera.pixelHeight / 2);
+        Vector3 centerPos = mainCamera.ScreenToWorldPoint(new Vector3(centerOfScreen.x, centerOfScreen.y, mainCamera.nearClipPlane - mainCamera.transform.position.z));
         centerPos.z = 0f;
-        Vector3 leftBorderCamera = mainCamera.ScreenToWorldPoint(new Vector3(0, centerOfScreen.y, mainCamera.nearClipPlane-mainCamera.transform.position.z));
+        Vector3 leftBorderCamera = mainCamera.ScreenToWorldPoint(new Vector3(0, centerOfScreen.y, mainCamera.nearClipPlane - mainCamera.transform.position.z));
         leftBorderCamera.z = 0f;
         radiusToSpawn = Vector3.Distance(leftBorderCamera, centerPos);
         centerOfWorld = centerPos;
-        
-        sphere.transform.position = centerOfWorld;
         SpawnPos(posGrid);
-        Debug.Log(posGrid.Count);
-        foreach (Vector3 current in posGrid)
-        {
-            Instantiate(sphere, current, Quaternion.identity);
-        }
+        originalPosGrid = posGrid;
+        Debug.Log("Original " + posGrid.Count);
+        RefreshForRandomArray();
+    }
+    void Start()
+    {
+        
     }
 
     private void FixedUpdate()
@@ -53,4 +58,27 @@ public class LocatePlayerArea : MonoBehaviour
         }
     }
 
+    public static void RefreshForRandomArray()
+    {
+        //toLaunchedPos = null;
+        toLaunchedPos = new Vector3[posGrid.Count];
+        posGrid.CopyTo(toLaunchedPos);
+        Debug.Log("Length Random Array "+toLaunchedPos.Length);
+    }
+
+    public static void RefreshUsedPositions()
+    {
+        posGrid.Clear();
+        posGrid = originalPosGrid;
+    }
+
+    public static Vector3 GetRandomPos()
+    {
+        int randomIndex = Random.Range(0, toLaunchedPos.Length);
+        Vector3 pos = toLaunchedPos[randomIndex];
+        posGrid.Remove(pos);
+        RefreshForRandomArray();
+
+        return pos;
+    }
 }
