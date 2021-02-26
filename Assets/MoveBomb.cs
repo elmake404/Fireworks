@@ -4,43 +4,37 @@ using UnityEngine;
 
 public class MoveBomb : MonoBehaviour
 {
+    public CollectCouroutine launch;
+    public GameObject bomb;
     public List<Transform> launchPlaces = new List<Transform>();
     private Vector3 targetPos;
+    private int numberOfArray;
 
 
     private void Start()
     {
+        numberOfArray = LocatePlayerArea.originalPosGrid.Count;
         targetPos = LocatePlayerArea.GetRandomPos();
-        Debug.Log(targetPos);
-        this.transform.position = launchPlaces[0].transform.position;
-        //this.transform.position = targetPos;
-    }
-
-    private void Update()
-    {
-        this.transform.position = Vector3.MoveTowards(this.transform.position, targetPos, Time.deltaTime);
-
-    }
-
-    private void RandomDestination()
-    { 
+        Debug.Log(numberOfArray);
+        launch.missleObject = bomb;
+        launch.startPos = launchPlaces[0].transform.position;
+        StartCoroutine( SpawnPeriodic());
+        Debug.Log( LocatePlayerArea.originalPosGrid.Count);
+        
         
     }
 
-    /*IEnumerator Move()
+    IEnumerator SpawnPeriodic()
     {
-        yield return new WaitForSeconds(1f);
-        Vector3 targetPos = LocatePlayerArea.GetRandomPos();
-        while (true)
+        for (int i = 0; i < numberOfArray-1; i++)
         {
-            Vector3.Lerp(this.transform.position, targetPos, 0.1f);
-            if (this.transform.position == targetPos)
-            {
-                break;  
-            }
+            IEnumerator newLaunch = launch.Launch_1();
+            StartCoroutine(newLaunch);
+            yield return new WaitForSeconds(0.2f);
         }
         yield return null;
-    }*/
+    }
+
 
 
 }
