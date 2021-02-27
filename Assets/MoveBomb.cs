@@ -19,7 +19,7 @@ public class MoveBomb : MonoBehaviour
         launch.missleObject = bomb;
         launch.startPos = launchPlaces[0].transform.position;
         StartCoroutine( SpawnPeriodic());
-        Debug.Log( LocatePlayerArea.originalPosGrid.Count);
+        //Debug.Log( LocatePlayerArea.originalPosGrid.Count);
         
         
     }

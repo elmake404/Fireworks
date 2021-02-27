@@ -63,7 +63,7 @@ public class LocatePlayerArea : MonoBehaviour
         //toLaunchedPos = null;
         toLaunchedPos = new Vector3[posGrid.Count];
         posGrid.CopyTo(toLaunchedPos);
-        Debug.Log("Length Random Array "+toLaunchedPos.Length);
+        //Debug.Log("Length Random Array "+toLaunchedPos.Length);
     }
 
     public static void RefreshUsedPositions()

@@ -15,7 +15,7 @@ public class CollectCouroutine : ScriptableObject
         for (float i = 0f; i < launchTime; i += 5f * Time.deltaTime)
         {
             newInstance.transform.position = Vector3.MoveTowards(newInstance.transform.position, targetPos, i / 200f);
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
         yield return null;
     }
