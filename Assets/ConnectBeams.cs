@@ -9,11 +9,14 @@ public class ConnectBeams : MonoBehaviour
     private HashSet<GameObject> selectedObjectsHash;
     private List<GameObject> selectedObjectsList;
     private GameObject onMouseGameObject;
+    //private List<Vector3> pointsToRender;
+    private int smoothPoint = 30;
     
     //private bool isFreePoint;
     
     void Start()
     {
+        //pointsToRender = new List<Vector3>();
         //GameObject.CreatePrimitive(PrimitiveType.Cube);
         GameObject obj = new GameObject();
         onMouseGameObject = obj;
@@ -22,24 +25,24 @@ public class ConnectBeams : MonoBehaviour
         selectedObjectsHash = new HashSet<GameObject>();
         lines = this.GetComponent<LineRenderer>();
         lines.positionCount = 0;
+        
+        //lines.alignment = LineAlignment.TransformZ;
         sceneCamera = FindObjectOfType<Camera>();
         Debug.Log(onMouseGameObject.name);
     }
 
     void Update()
     {
-        
+        List<Vector3> pointsToRender = new List<Vector3>();
 
         if (Input.GetMouseButtonDown(0))
         {
-
-
         }
 
         if (Input.GetMouseButton(0))
         {
             RayToOnjects();
-
+            pointsToRender = InterpolatedCurve();
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -47,22 +50,22 @@ public class ConnectBeams : MonoBehaviour
             lines.positionCount = 0;
             selectedObjectsHash.Clear();
             selectedObjectsList.Clear();
-            
-
+            //pointsToRender.Clear();
         }
 
-
-        if (lines.positionCount != 0)
+        
+        if (pointsToRender != null)
         {
-            for (int i = 0; i < selectedObjectsList.Count; i++)
+            lines.positionCount = pointsToRender.Count;
+            for (int i = 0; i < pointsToRender.Count; i++)
             {
-                lines.SetPosition(i, selectedObjectsList[i].transform.position);
+                lines.SetPosition(i, pointsToRender[i]);
             }
         }
-        /*Debug.Log(selectedObjectsHash.Count);
-        Debug.Log(selectedObjectsList.Count);
-        Debug.Log(lines.positionCount);*/
 
+        /*lines.startWidth = 0.5f;
+        lines.endWidth = 0.5f;
+        lines.widthMultiplier = 0.5f;*/
     }
     private void RayToOnjects()
     {
@@ -74,15 +77,14 @@ public class ConnectBeams : MonoBehaviour
             {
                 if (selectedObjectsList.Find(obj => obj.GetHashCode() == onMouseGameObject.GetHashCode()) != null)
                 {
-                    lines.positionCount -= 1;
+                    //lines.positionCount -= 1;
                     selectedObjectsList.Remove(onMouseGameObject);
                 }
 
-                lines.positionCount = selectedObjectsHash.Count;
+                //lines.positionCount = selectedObjectsHash.Count;
                 selectedObjectsList.Add(hit.transform.gameObject);
                
             }
-
         }
         else
         {
@@ -90,11 +92,51 @@ public class ConnectBeams : MonoBehaviour
             onMouseGameObject.transform.position = pointOutTarget;
             if (selectedObjectsList.Find(obj => obj.GetHashCode() == onMouseGameObject.GetHashCode()) == null)
             {
-                lines.positionCount += 1;
+                //lines.positionCount += 1;
                 selectedObjectsList.Add(onMouseGameObject);
             }
-            
-
         }
+    }
+
+    private List<Vector3> InterpolatedCurve()
+    {
+        List<Vector3> originalPoints = new List<Vector3>();
+        List<Vector3> pointsToRender = new List<Vector3>();
+        if (selectedObjectsList.Count >= 2)
+        {
+            foreach (GameObject currentObj in selectedObjectsList)
+            {
+                originalPoints.Add(currentObj.transform.position);
+                
+            }
+        }
+        else
+        {
+            Debug.Log("Null (!=>2)");
+            return null;
+        }
+
+        //int curvedLength = smoothPoint*originalPoints.Length;
+
+        for (int currPoint = 0; currPoint < originalPoints.Count; currPoint++)
+        {
+            float t = 0.0f;
+            for (int currCurvedPoint = 0; currCurvedPoint < smoothPoint; currCurvedPoint++)
+            {
+                if (originalPoints.Count - 1 < currPoint + 1)
+                {
+                    continue;
+                }
+                else
+                {
+                    t = Mathf.InverseLerp(0, smoothPoint - 1, currCurvedPoint);
+                    Vector3 curvedPoint = (1 - t) * originalPoints[currPoint] + t * originalPoints[currPoint + 1];
+                    pointsToRender.Add(curvedPoint);
+                }
+                
+            }
+            
+        }
+        return pointsToRender;
     }
 }

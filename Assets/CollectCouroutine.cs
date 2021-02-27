@@ -12,7 +12,7 @@ public class CollectCouroutine : ScriptableObject
     {
         GameObject newInstance = Instantiate(missleObject, startPos, Quaternion.identity);
         Vector3 targetPos = LocatePlayerArea.GetRandomPos();
-        for (float i = 0f; i < launchTime; i += 5f * Time.deltaTime)
+        for (float i = 0f; i < launchTime; i += 15f * Time.deltaTime)
         {
             newInstance.transform.position = Vector3.MoveTowards(newInstance.transform.position, targetPos, i / 200f);
             yield return new WaitForFixedUpdate();
