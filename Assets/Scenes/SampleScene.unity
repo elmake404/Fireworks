@@ -688,6 +688,121 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[1].time
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[1].value
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[1].inSlope
+      value: 138.65738
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[1].outSlope
+      value: 136.96124
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[0].inSlope
+      value: -0.025698682
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[0].outSlope
+      value: 0.06839166
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[0].outWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[0].tangentMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[1].tangentMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[0].weightedMode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[1].weightedMode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[1].inWeight
+      value: 0.008333325
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[1].outWeight
+      value: 0.008333325
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[2].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[2].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[2].inSlope
+      value: 0.07584246
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[2].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[2].tangentMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[2].weightedMode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: pointDistributionGraph.m_Curve.Array.data[2].inWeight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5034100115553651452, guid: 80f75d044622f02498f6157394e690dc,
         type: 3}
       propertyPath: m_Parameters.numCornerVertices

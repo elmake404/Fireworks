@@ -9,8 +9,9 @@ public class ConnectBeams : MonoBehaviour
     private HashSet<GameObject> selectedObjectsHash;
     private List<GameObject> selectedObjectsList;
     private GameObject onMouseGameObject;
+    public AnimationCurve pointDistributionGraph;
     //private List<Vector3> pointsToRender;
-    private int smoothPoint = 30;
+    private int smoothPoint = 4;
     
     //private bool isFreePoint;
     
@@ -130,7 +131,8 @@ public class ConnectBeams : MonoBehaviour
                 else
                 {
                     t = Mathf.InverseLerp(0, smoothPoint - 1, currCurvedPoint);
-                    Vector3 curvedPoint = (1 - t) * originalPoints[currPoint] + t * originalPoints[currPoint + 1];
+                    float tEvaluate = pointDistributionGraph.Evaluate(t);
+                    Vector3 curvedPoint = (1 - tEvaluate) * originalPoints[currPoint] + tEvaluate * originalPoints[currPoint + 1];
                     pointsToRender.Add(curvedPoint);
                 }
                 
@@ -139,4 +141,22 @@ public class ConnectBeams : MonoBehaviour
         }
         return pointsToRender;
     }
+
+    /*private void OnDrawGizmos()
+    {
+        List<Vector3> pointsToRender = new List<Vector3>();
+        pointsToRender = InterpolatedCurve();
+        if (pointsToRender != null)
+        {
+            
+            for (int i = 0; i < pointsToRender.Count; i++)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(pointsToRender[i],0.4f);
+                
+            }
+        }
+    }*/
+    
 }
+    
