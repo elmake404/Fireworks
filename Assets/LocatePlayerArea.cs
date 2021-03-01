@@ -5,80 +5,66 @@ using UnityEngine;
 public class LocatePlayerArea : MonoBehaviour
 {
     private Camera mainCamera;
-    private Vector3 centerOfWorld;
-    private float radiusToSpawn;
-    public float gridSpacing;
-    public static HashSet<Vector3> originalPosGrid;    // Зарезервированные, для сброса posGrid - позиции
-    public static HashSet<Vector3> posGrid;     //Готовые позиции для вычитания
-    //public static HashSet<Vector3> usedPosGrid;     //Испольщованные позиции
-    public static Vector3[] toLaunchedPos;
+    private Vector3 rectPos;
+    private Vector3 intervalPerPoint = new Vector3(0.8f, 0.8f, 0f);
+    private int numPointsX_Axis;
+    private int numPointsY_Axis;
+    private Vector3 rectPosXEnd;
+    private Vector3 rectPosYEnd;
+    private Vector3 xOffset; 
+    private Vector3 yOffset; 
+    private Vector3[,] MatrixPoints;
     
+    public GameObject instanced;  
 
     private void Awake()
     {
-        posGrid = new HashSet<Vector3>();
-        //usedPosGrid = new HashSet<Vector3>();
+
         mainCamera = this.gameObject.GetComponent<Camera>();
-        Vector2 centerOfScreen = new Vector2(mainCamera.pixelWidth / 2, mainCamera.pixelHeight / 2);
-        Vector3 centerPos = mainCamera.ScreenToWorldPoint(new Vector3(centerOfScreen.x, centerOfScreen.y, mainCamera.nearClipPlane - mainCamera.transform.position.z));
-        centerPos.z = 0f;
-        Vector3 leftBorderCamera = mainCamera.ScreenToWorldPoint(new Vector3(0, centerOfScreen.y, mainCamera.nearClipPlane - mainCamera.transform.position.z));
-        leftBorderCamera.z = 0f;
-        radiusToSpawn = Vector3.Distance(leftBorderCamera, centerPos);
-        centerOfWorld = centerPos;
-        SpawnPos(posGrid);
-        originalPosGrid = posGrid;
-        Debug.Log("Original " + posGrid.Count);
-        RefreshForRandomArray();
-    }
-    void Start()
-    {
-        
-    }
+        Vector3 centerPos = new Vector3(0f, 1f ,0f);
 
-    private void FixedUpdate()
-    {
+        Rect onScreenRect = new Rect(Screen.width * ((1f - 0.8f) / 2f), Screen.height * ((1f - 0.5f) / 2f), Screen.width * 0.8f, Screen.height * 0.5f);
+        rectPos = mainCamera.ScreenToWorldPoint( new Vector3( onScreenRect.position.x, 3f*onScreenRect.y, mainCamera.nearClipPlane - this.transform.position.z));
+        rectPos.z = 0f;
 
+        rectPosXEnd = new Vector3(rectPos.x - (rectPos.x) * 2f, rectPos.y, 0f);
+        rectPosYEnd = new Vector3(rectPos.x, centerPos.y - rectPos.y + centerPos.y, 0f);
+
+        numPointsX_Axis = Mathf.RoundToInt(Vector3.Distance(rectPos, rectPosXEnd) /Vector3.Distance(Vector3.zero, new Vector3(intervalPerPoint.x, 0f, 0f)));
+        numPointsY_Axis = Mathf.RoundToInt(Vector3.Distance(rectPos, rectPosYEnd) /Vector3.Distance(Vector3.zero, new Vector3(0f, intervalPerPoint.y, 0f)));
+
+        MatrixPoints = new Vector3[numPointsY_Axis, numPointsX_Axis]; 
+
+        xOffset = (rectPosXEnd - rectPos)/numPointsX_Axis;
+        yOffset = (rectPosYEnd - rectPos)/numPointsY_Axis;
+        Debug.Log(numPointsY_Axis);
+        SpawnPos();
     }
 
-    private void SpawnPos(HashSet<Vector3> positions)
+    void OnGUI()
     {
-        for (float x = -radiusToSpawn; x < radiusToSpawn; x += gridSpacing)
+        Rect onScreenRect = new Rect(Screen.width * ((1f - 0.8f) / 2f), Screen.height * ((1f - 0.5f) / 2f), Screen.width * 0.8f, Screen.height * 0.5f);
+
+        GUI.Box(onScreenRect, "");
+    }
+
+
+    
+
+    private void SpawnPos()
+    {
+        for (int y = 0; y < numPointsY_Axis; y++)
         {
-            for (float y = -radiusToSpawn; y < radiusToSpawn; y += gridSpacing)
+            for (int x = 0; x < numPointsX_Axis; x++)
             {
-                Vector3 spawnPosition = new Vector3(centerOfWorld.x + x, centerOfWorld.y + y, 0f) ;
-                if (Vector3.Distance(spawnPosition, centerOfWorld) <radiusToSpawn)
-                {
-                    positions.Add(spawnPosition);
-                    
-                }
-                
+                Vector3 point = new Vector3(xOffset.x/2f + rectPos.x + xOffset.x * x, yOffset.y/2f + rectPos.y + yOffset.y * y, 0f);
+                MatrixPoints[y, x] = point;
+
+                GameObject intance = GameObject.Instantiate(instanced);
+                instanced.transform.position = point;
             }
         }
     }
 
-    public static void RefreshForRandomArray()
-    {
-        //toLaunchedPos = null;
-        toLaunchedPos = new Vector3[posGrid.Count];
-        posGrid.CopyTo(toLaunchedPos);
-        //Debug.Log("Length Random Array "+toLaunchedPos.Length);
-    }
-
-    public static void RefreshUsedPositions()
-    {
-        posGrid.Clear();
-        posGrid = originalPosGrid;
-    }
-
-    public static Vector3 GetRandomPos()
-    {
-        int randomIndex = Random.Range(0, toLaunchedPos.Length);
-        Vector3 pos = toLaunchedPos[randomIndex];
-        posGrid.Remove(pos);
-        RefreshForRandomArray();
-
-        return pos;
-    }
+    
 }

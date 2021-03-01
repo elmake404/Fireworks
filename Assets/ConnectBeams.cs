@@ -17,8 +17,6 @@ public class ConnectBeams : MonoBehaviour
     
     void Start()
     {
-        //pointsToRender = new List<Vector3>();
-        //GameObject.CreatePrimitive(PrimitiveType.Cube);
         GameObject obj = new GameObject();
         onMouseGameObject = obj;
 
@@ -26,10 +24,7 @@ public class ConnectBeams : MonoBehaviour
         selectedObjectsHash = new HashSet<GameObject>();
         lines = this.GetComponent<LineRenderer>();
         lines.positionCount = 0;
-        
-        //lines.alignment = LineAlignment.TransformZ;
         sceneCamera = FindObjectOfType<Camera>();
-        Debug.Log(onMouseGameObject.name);
     }
 
     void Update()
@@ -51,7 +46,6 @@ public class ConnectBeams : MonoBehaviour
             lines.positionCount = 0;
             selectedObjectsHash.Clear();
             selectedObjectsList.Clear();
-            //pointsToRender.Clear();
         }
 
         
@@ -64,9 +58,6 @@ public class ConnectBeams : MonoBehaviour
             }
         }
 
-        /*lines.startWidth = 0.5f;
-        lines.endWidth = 0.5f;
-        lines.widthMultiplier = 0.5f;*/
     }
     private void RayToOnjects()
     {
@@ -78,13 +69,10 @@ public class ConnectBeams : MonoBehaviour
             {
                 if (selectedObjectsList.Find(obj => obj.GetHashCode() == onMouseGameObject.GetHashCode()) != null)
                 {
-                    //lines.positionCount -= 1;
                     selectedObjectsList.Remove(onMouseGameObject);
                 }
 
-                //lines.positionCount = selectedObjectsHash.Count;
                 selectedObjectsList.Add(hit.transform.gameObject);
-               
             }
         }
         else
@@ -93,7 +81,6 @@ public class ConnectBeams : MonoBehaviour
             onMouseGameObject.transform.position = pointOutTarget;
             if (selectedObjectsList.Find(obj => obj.GetHashCode() == onMouseGameObject.GetHashCode()) == null)
             {
-                //lines.positionCount += 1;
                 selectedObjectsList.Add(onMouseGameObject);
             }
         }
@@ -108,16 +95,12 @@ public class ConnectBeams : MonoBehaviour
             foreach (GameObject currentObj in selectedObjectsList)
             {
                 originalPoints.Add(currentObj.transform.position);
-                
             }
         }
         else
         {
-            Debug.Log("Null (!=>2)");
             return null;
         }
-
-        //int curvedLength = smoothPoint*originalPoints.Length;
 
         for (int currPoint = 0; currPoint < originalPoints.Count; currPoint++)
         {
@@ -135,7 +118,6 @@ public class ConnectBeams : MonoBehaviour
                     Vector3 curvedPoint = (1 - tEvaluate) * originalPoints[currPoint] + tEvaluate * originalPoints[currPoint + 1];
                     pointsToRender.Add(curvedPoint);
                 }
-                
             }
             
         }

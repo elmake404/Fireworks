@@ -120,7 +120,7 @@ LineRenderer:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
-    numCapVertices: 0
+    numCapVertices: 5
     alignment: 0
     textureMode: 0
     shadowBias: 0.5
@@ -139,3 +139,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde7cbe110ef5764fb0a25103e5a1c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointDistributionGraph:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -0.025698682
+      outSlope: 0.06839166
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.5
+      inSlope: 138.65738
+      outSlope: 136.96124
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0.008333325
+      outWeight: 0.008333325
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.07584246
+      outSlope: 0
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

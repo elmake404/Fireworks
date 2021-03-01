@@ -8,32 +8,39 @@ public class MoveBomb : MonoBehaviour
     public GameObject bomb;
     public List<Transform> launchPlaces = new List<Transform>();
     private Vector3 targetPos;
-    private int numberOfArray;
+    //private int numberOfArray;
 
 
     private void Start()
     {
-        numberOfArray = LocatePlayerArea.originalPosGrid.Count;
-        targetPos = LocatePlayerArea.GetRandomPos();
-        Debug.Log(numberOfArray);
+        //numberOfArray = LocatePlayerArea.originalPosGrid.Count-1;
+        //targetPos = LocatePlayerArea.GetRandomPos();
+        //Debug.Log(numberOfArray);
         launch.missleObject = bomb;
         launch.startPos = launchPlaces[0].transform.position;
-        StartCoroutine( SpawnPeriodic());
+        //StartCoroutine( SpawnPeriodic());
         //Debug.Log( LocatePlayerArea.originalPosGrid.Count);
-        
-        
+
+
+        //AssetBundle.Instantiate(launch)
+
     }
 
-    IEnumerator SpawnPeriodic()
+    /*IEnumerator SpawnPeriodic()
     {
-        for (int i = 0; i < numberOfArray-1; i++)
+        yield return new WaitForSeconds(1f);
+        for (int i = 0; i < 5; i++)
         {
-            IEnumerator newLaunch = launch.Launch_1();
-            StartCoroutine(newLaunch);
-            yield return new WaitForSeconds(0.2f);
+
+            //IEnumerator newLaunch = AssetBundle.Instantiate(launch).Launch_1();
+            IEnumerator ddsfvbdf = launch.Launch_1();
+            StartCoroutine(ddsfvbdf);
+
+
+            yield return new WaitForSeconds(1f);
         }
         yield return null;
-    }
+    }*/
 
 
 

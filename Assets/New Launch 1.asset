@@ -12,6 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed0c790c13d03704e96dd41f50af4b87, type: 3}
   m_Name: New Launch 1
   m_EditorClassIdentifier: 
-  launchTime: 100
-  startPos: {x: 1.36, y: -2.634, z: 0}
-  missleObject: {fileID: 0}
+  launchTime: 1500
+  speedAtTime:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 7.168478
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0
+      outWeight: 0.22083333
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -19.374826
+      outSlope: 0
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0.054166675
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  startPos: {x: 1.36, y: -4.32, z: 3.09}
+  missleObject: {fileID: 7173023176389399537, guid: 6a106f7119e462b40bec762446e733b9,
+    type: 3}
