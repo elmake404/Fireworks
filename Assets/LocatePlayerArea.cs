@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LocatePlayerArea : MonoBehaviour
 {
+    private SaveData saveMatrix;
     private Camera mainCamera;
     private Vector3 rectPos;
     private Vector3 intervalPerPoint = new Vector3(0.8f, 0.8f, 0f);
@@ -14,11 +16,12 @@ public class LocatePlayerArea : MonoBehaviour
     private Vector3 xOffset; 
     private Vector3 yOffset; 
     private Vector3[,] MatrixPoints;
-    
-    public GameObject instanced;  
+    [SerializeField] private GenerateMatrixInfo matrixInfo = new GenerateMatrixInfo();
+
 
     private void Awake()
     {
+        
 
         mainCamera = this.gameObject.GetComponent<Camera>();
         Vector3 centerPos = new Vector3(0f, 1f ,0f);
@@ -38,33 +41,23 @@ public class LocatePlayerArea : MonoBehaviour
         xOffset = (rectPosXEnd - rectPos)/numPointsX_Axis;
         yOffset = (rectPosYEnd - rectPos)/numPointsY_Axis;
         Debug.Log(numPointsY_Axis);
-        SpawnPos();
+        //SpawnPos();
+
+        matrixInfo.rectPos = this.rectPos;
+        matrixInfo.xOffset = this.xOffset;
+        matrixInfo.yOffset = this.yOffset;
+        matrixInfo.ySizeArray = this.numPointsY_Axis;
+        matrixInfo.xSizeArray = this.numPointsX_Axis;
+        saveMatrix = FindObjectOfType<SaveData>();
+        saveMatrix.Save(matrixInfo);
+
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
+        Debug.Log(Application.persistentDataPath);
+
     }
 
-    void OnGUI()
-    {
-        Rect onScreenRect = new Rect(Screen.width * ((1f - 0.8f) / 2f), Screen.height * ((1f - 0.5f) / 2f), Screen.width * 0.8f, Screen.height * 0.5f);
-
-        GUI.Box(onScreenRect, "");
-    }
 
 
-    
-
-    private void SpawnPos()
-    {
-        for (int y = 0; y < numPointsY_Axis; y++)
-        {
-            for (int x = 0; x < numPointsX_Axis; x++)
-            {
-                Vector3 point = new Vector3(xOffset.x/2f + rectPos.x + xOffset.x * x, yOffset.y/2f + rectPos.y + yOffset.y * y, 0f);
-                MatrixPoints[y, x] = point;
-
-                GameObject intance = GameObject.Instantiate(instanced);
-                instanced.transform.position = point;
-            }
-        }
-    }
 
     
 }
