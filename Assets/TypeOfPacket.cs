@@ -9,4 +9,5 @@ public class TypeOfPacket : ScriptableObject
     public GameObject fireWork;
     public int colorCode;
 
+
 }

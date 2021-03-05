@@ -36,22 +36,11 @@ public class CollectCouroutine : MonoBehaviour
             gameObj.transform.position = move;
             yield return new WaitForEndOfFrame();
         }
-        StartCoroutine(AfterPerLaunch(gameObj, gameObj.transform.position));
+       
         yield return null;
     }
 
-    private IEnumerator AfterPerLaunch(GameObject gameObj, Vector3 launchPos)
-    {
-        yield return new WaitForSeconds(0.5f);
-        Vector3 currentTarget = launchPos;
-        currentTarget.y -= 10f;
-        for (float i = 0f; i < launchTime; i += 1f * Time.deltaTime)
-        {
-            Vector3 move = Vector3.Lerp(launchPos, currentTarget, speedAtFall.Evaluate(i / launchTime));
-            gameObj.transform.position = move;
-            yield return new WaitForEndOfFrame();
-        }
-    }
+    
 
     private int[] GetRandomIndexes(int numIndexes)
     {

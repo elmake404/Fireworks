@@ -609,7 +609,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2098684755, guid: d8d95ead7fb2af04fb1e379dbf970839, type: 3}
       propertyPath: launchTime
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7092212365393269954, guid: d8d95ead7fb2af04fb1e379dbf970839,
         type: 3}
