@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1280898ead77a08478c985cff2f1f75a, type: 3}
+  m_Name: Switch Packet
+  m_EditorClassIdentifier: 
+  packetPrefab: {fileID: 7173023176389399537, guid: 36ff4edaa615896429152b91d7618b65,
+    type: 3}
+  fireWork: {fileID: 1302996127845072, guid: 27860a107fa4cb44490ee597c1ee626e, type: 3}
+  colorCode: 0

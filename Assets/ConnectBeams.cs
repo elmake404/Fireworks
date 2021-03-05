@@ -12,11 +12,14 @@ public class ConnectBeams : MonoBehaviour
     public AnimationCurve pointDistributionGraph;
     //private List<Vector3> pointsToRender;
     private int smoothPoint = 4;
+    private int enterColorCode;
     
     //private bool isFreePoint;
     
     void Start()
     {
+        enterColorCode = -1;
+
         GameObject obj = new GameObject();
         onMouseGameObject = obj;
 
@@ -31,6 +34,8 @@ public class ConnectBeams : MonoBehaviour
     {
         List<Vector3> pointsToRender = new List<Vector3>();
 
+        Debug.Log(selectedObjectsHash.Count);
+
         if (Input.GetMouseButtonDown(0))
         {
         }
@@ -44,6 +49,15 @@ public class ConnectBeams : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             lines.positionCount = 0;
+            foreach (GameObject currentObj in selectedObjectsList)
+            {
+                if (currentObj.GetHashCode() == onMouseGameObject.GetHashCode())
+                {
+                    continue;
+                }
+                StartCoroutine(currentObj.GetComponent<InfoPacket>().Destroy());
+            }
+            enterColorCode = -1;
             selectedObjectsHash.Clear();
             selectedObjectsList.Clear();
         }
@@ -65,24 +79,37 @@ public class ConnectBeams : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            if (selectedObjectsHash.Add(hit.transform.gameObject))
+            int currentColorCode = hit.transform.GetComponent<InfoPacket>().selectedType.colorCode;
+            Debug.Log(enterColorCode);
+            if ( SelectedColorCode(currentColorCode, hit.transform.gameObject) == true)
             {
+                selectedObjectsHash.Add(hit.transform.gameObject);
                 if (selectedObjectsList.Find(obj => obj.GetHashCode() == onMouseGameObject.GetHashCode()) != null)
                 {
                     selectedObjectsList.Remove(onMouseGameObject);
                 }
 
                 selectedObjectsList.Add(hit.transform.gameObject);
+
+            }
+            else
+            {
+                AddPointMouse();
             }
         }
         else
         {
-            Vector3 pointOutTarget = sceneCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, sceneCamera.nearClipPlane - sceneCamera.transform.position.z));
-            onMouseGameObject.transform.position = pointOutTarget;
-            if (selectedObjectsList.Find(obj => obj.GetHashCode() == onMouseGameObject.GetHashCode()) == null)
-            {
-                selectedObjectsList.Add(onMouseGameObject);
-            }
+            AddPointMouse();
+        }
+    }
+
+    private void AddPointMouse()
+    {
+        Vector3 pointOutTarget = sceneCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, sceneCamera.nearClipPlane - sceneCamera.transform.position.z));
+        onMouseGameObject.transform.position = pointOutTarget;
+        if (selectedObjectsList.Find(obj => obj.GetHashCode() == onMouseGameObject.GetHashCode()) == null)
+        {
+            selectedObjectsList.Add(onMouseGameObject);
         }
     }
 
@@ -124,21 +151,71 @@ public class ConnectBeams : MonoBehaviour
         return pointsToRender;
     }
 
-    /*private void OnDrawGizmos()
+    private bool SelectedColorCode(int currentColorCode, GameObject currentObject)
     {
-        List<Vector3> pointsToRender = new List<Vector3>();
-        pointsToRender = InterpolatedCurve();
-        if (pointsToRender != null)
+        if (enterColorCode == -1)
         {
-            
-            for (int i = 0; i < pointsToRender.Count; i++)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(pointsToRender[i],0.4f);
+            enterColorCode = currentColorCode;
+        }
+
+        switch (currentColorCode)
+        {
+            case 0:
+                return SwitcherPacket(currentColorCode, currentObject);
+
+            case 1:
+                return AddedPacket(currentColorCode, currentObject);
                 
+            case 2:
+                return AddedPacket(currentColorCode, currentObject);
+
+            case 3:
+                return AddedPacket(currentColorCode, currentObject);
+
+            case 4:
+                return AddedPacket(currentColorCode, currentObject);
+
+
+
+            default: throw new System.Exception("no number") ;
+        }
+
+        
+    }
+
+    private bool SwitcherPacket(int currentColorCode, GameObject currentObject)
+    {
+        if (selectedObjectsHash.Contains(currentObject) == false)
+        {
+            enterColorCode = -1;
+            return true;
+        }
+        else
+        {
+            enterColorCode = -1;
+            return false;
+        }
+    }
+
+    private bool AddedPacket(int currentColorCode, GameObject currentObject)
+    {
+        if (enterColorCode == currentColorCode)
+        {
+            if (selectedObjectsHash.Contains(currentObject) == true)
+            {
+                return false;
+            }
+
+            else
+            {
+                return true;
             }
         }
-    }*/
-    
+
+        else
+        {
+            return false;
+        }
+    }
 }
     

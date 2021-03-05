@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1280898ead77a08478c985cff2f1f75a, type: 3}
+  m_Name: Red Packet
+  m_EditorClassIdentifier: 
+  packetPrefab: {fileID: 7173023176389399537, guid: 6a106f7119e462b40bec762446e733b9,
+    type: 3}
+  fireWork: {fileID: 1265716245609502, guid: 1e8a96ea46dd2644f8aa7afa0a9c4181, type: 3}
+  colorCode: 1

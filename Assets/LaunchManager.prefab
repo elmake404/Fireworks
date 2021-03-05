@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7092212365393269955
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7092212365393269957}
+  - component: {fileID: 7092212365393269954}
+  - component: {fileID: 2098684755}
+  m_Layer: 0
+  m_Name: LaunchManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7092212365393269957
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7092212365393269955}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.9411064, y: -1.6219637, z: -1.0477691}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7092212365393269954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7092212365393269955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 076d9e4d80cd7224795db7aeafeb02ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  launchPositions:
+  - {fileID: 0}
+  listPackets:
+  - {fileID: 11400000, guid: ad818cdfbe907584bac569e1f018deb1, type: 2}
+  - {fileID: 11400000, guid: e1320a90f1e2b1640bdfd3b68712b5b8, type: 2}
+  - {fileID: 11400000, guid: 9d286212d1a853149a5427964254dd50, type: 2}
+  - {fileID: 11400000, guid: 2e027752cd327e44882afc4b3edb0cf3, type: 2}
+  - {fileID: 11400000, guid: fe9fda9a2184020438b8fafaa4b929c9, type: 2}
+--- !u!114 &2098684755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7092212365393269955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed0c790c13d03704e96dd41f50af4b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  launchTime: 10
+  fallTime: 1000
+  speedAtTime:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 35.61837
+      outSlope: 35.61837
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0
+      outWeight: 0.008333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0
+      outSlope: -0
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.8625
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speedAtFall:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.010334241
+      outSlope: 0.010334241
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 65.300415
+      outSlope: 65.300415
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.008333325
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
