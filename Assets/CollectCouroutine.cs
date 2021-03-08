@@ -5,42 +5,91 @@ using UnityEngine;
 
 public class CollectCouroutine : MonoBehaviour
 {
-    public float launchTime;
+    //public float launchTime;
     public float fallTime;
     public AnimationCurve speedAtTime;
     public AnimationCurve speedAtFall;
 
-    public IEnumerator LaunchOneType(GameObject gameObj,Transform[] launchPos, Vector3[] targetPos, float preLaunchTime, float launchPeriod, float percentToUse)
+    public IEnumerator LaunchOneType(GameObject gameObj,Transform[] launchPos, Vector3[] targetPos, float preLaunchTime, float launchPeriod, float percentToUse, float launchDuration)
     {
         int clampedIndex = Mathf.Clamp(Mathf.RoundToInt(Mathf.Lerp(0, targetPos.Length, percentToUse)), 1, targetPos.Length);
         int[] randomIndexes = GetRandomIndexes(targetPos.Length);
+        
 
         yield return new WaitForSeconds(preLaunchTime);
         
         for (int i = 0; i < clampedIndex; i++)
         {
-            
-            StartCoroutine(PerLaunch(gameObj,launchPos[0].transform.position, targetPos[randomIndexes[i]]));
-            
+            StartCoroutine(PerLaunch(gameObj,launchPos[Random.Range(0, launchPos.Length-1)].transform.position, targetPos[randomIndexes[i]], launchDuration));
             yield return new WaitForSeconds(launchPeriod);
         }
         yield return null;
     }
 
-    private IEnumerator PerLaunch(GameObject gameObj, Vector3 launchPos, Vector3 currentTarget)
+    public IEnumerator LaunchRandomType(GameObject[] gameObj, Transform[] launchPos, Vector3[] targetPos, float preLaunchTime, float launchPeriod, float percentToUse, float launchDuration)
     {
-        gameObj = GameObject.Instantiate(gameObj);
-        for (float i = 0f; i < launchTime; i += 1f * Time.deltaTime)
+        int clampedIndex = Mathf.Clamp(Mathf.RoundToInt(Mathf.Lerp(0, targetPos.Length, percentToUse)), 1, targetPos.Length);
+        int[] randomIndexes = GetRandomIndexes(targetPos.Length);
+        
+        GameObject[] resizedArrayGameObjects = new GameObject[clampedIndex];
+
+        for (int i = 0; i < clampedIndex; i++)
         {
-            Vector3 move = Vector3.Lerp(launchPos, currentTarget, speedAtTime.Evaluate(i / launchTime));
-            gameObj.transform.position = move;
-            yield return new WaitForEndOfFrame();
+            int currRandomIndex = Random.Range(0, gameObj.Length);
+            resizedArrayGameObjects[i] = gameObj[currRandomIndex];
         }
-       
+
+        int[] randomIndexesGameObj = GetRandomIndexes(resizedArrayGameObjects.Length);
+
+        yield return new WaitForSeconds(preLaunchTime);
+
+        for (int i = 0; i < clampedIndex; i++)
+        {
+            StartCoroutine(PerLaunch(resizedArrayGameObjects[randomIndexesGameObj[i]], launchPos[Random.Range(0, launchPos.Length - 1)].transform.position, targetPos[randomIndexes[i]], launchDuration));
+            yield return new WaitForSeconds(launchPeriod);
+        }
         yield return null;
     }
 
-    
+    private IEnumerator PerLaunch(GameObject gameObj, Vector3 launchPos, Vector3 currentTarget, float launchDuration)
+    {
+        
+        gameObj = GameObject.Instantiate(gameObj);
+        for (float i = 0f; i < launchDuration; i += 1f * Time.deltaTime)
+        {
+            
+            if (IsReferenceNull(gameObj) == true) break;
+            Vector3 move = Vector3.Lerp(launchPos, currentTarget, speedAtTime.Evaluate(i / launchDuration));
+            gameObj.transform.position = move;
+            yield return new WaitForEndOfFrame();
+        }
+        if (IsReferenceNull(gameObj) == false)
+        {
+            StartCoroutine(AfterLaunchFall(gameObj));
+        }
+        yield return null;
+    }
+
+    private IEnumerator AfterLaunchFall(GameObject gameObj)
+    {
+        
+        if (IsReferenceNull(gameObj) == false)
+        {
+            StartCoroutine(gameObj.GetComponentInChildren<InfoPacket>().DyingFlare(fallTime));
+        }
+        
+        Vector3 fallStartPos = gameObj.transform.position;
+        Vector3 targetPos = new Vector3(fallStartPos.x, fallStartPos.y - 2f, fallStartPos.z);
+
+        for (float i = 0f; i < fallTime; i += 1f * Time.deltaTime)
+        {
+            if (IsReferenceNull(gameObj) == true) break;
+            Vector3 move = Vector3.Lerp(fallStartPos, targetPos, speedAtFall.Evaluate(i / fallTime));
+            gameObj.transform.position = move;
+            yield return new WaitForEndOfFrame();
+        }
+        yield return null;
+    }
 
     private int[] GetRandomIndexes(int numIndexes)
     {
@@ -60,5 +109,17 @@ public class CollectCouroutine : MonoBehaviour
         }
 
         return newRandomIndexes;
+    }
+
+    private bool IsReferenceNull(GameObject obj)
+    {
+        if (obj == null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

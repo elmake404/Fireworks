@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   launchPositions:
   - {fileID: 0}
+  - {fileID: 0}
   listPackets:
   - {fileID: 11400000, guid: ad818cdfbe907584bac569e1f018deb1, type: 2}
   - {fileID: 11400000, guid: e1320a90f1e2b1640bdfd3b68712b5b8, type: 2}
@@ -64,8 +65,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed0c790c13d03704e96dd41f50af4b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchTime: 10
-  fallTime: 1000
+  launchTime: 2
+  fallTime: 5
   speedAtTime:
     serializedVersion: 2
     m_Curve:
@@ -96,20 +97,20 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.010334241
-      outSlope: 0.010334241
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
-      weightedMode: 3
+      weightedMode: 0
       inWeight: 0
-      outWeight: 1
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 65.300415
-      outSlope: 65.300415
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
-      weightedMode: 3
-      inWeight: 0.008333325
+      weightedMode: 0
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

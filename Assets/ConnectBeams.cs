@@ -7,6 +7,7 @@ public class ConnectBeams : MonoBehaviour
     private LineRenderer lines;
     private Camera sceneCamera;
     private HashSet<GameObject> selectedObjectsHash;
+    private HashSet<GameObject> selectedSwitchers;
     private List<GameObject> selectedObjectsList;
     private GameObject onMouseGameObject;
     public AnimationCurve pointDistributionGraph;
@@ -25,6 +26,7 @@ public class ConnectBeams : MonoBehaviour
 
         selectedObjectsList = new List<GameObject>();
         selectedObjectsHash = new HashSet<GameObject>();
+        selectedSwitchers = new HashSet<GameObject>();
         lines = this.GetComponent<LineRenderer>();
         lines.positionCount = 0;
         sceneCamera = FindObjectOfType<Camera>();
@@ -34,7 +36,7 @@ public class ConnectBeams : MonoBehaviour
     {
         List<Vector3> pointsToRender = new List<Vector3>();
 
-        Debug.Log(selectedObjectsHash.Count);
+        //Debug.Log(selectedObjectsHash.Count);
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -80,7 +82,7 @@ public class ConnectBeams : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             int currentColorCode = hit.transform.GetComponent<InfoPacket>().selectedType.colorCode;
-            Debug.Log(enterColorCode);
+            //Debug.Log(enterColorCode);
             if ( SelectedColorCode(currentColorCode, hit.transform.gameObject) == true)
             {
                 selectedObjectsHash.Add(hit.transform.gameObject);
@@ -157,6 +159,14 @@ public class ConnectBeams : MonoBehaviour
         {
             enterColorCode = currentColorCode;
         }
+        else if (selectedObjectsList.Count >= 2)
+        {
+            if (selectedObjectsList[selectedObjectsList.Count - 2].GetComponent<InfoPacket>()?.selectedType.colorCode == 0)
+            {
+                enterColorCode = currentColorCode;
+            }
+        }
+        
 
         switch (currentColorCode)
         {
@@ -185,20 +195,24 @@ public class ConnectBeams : MonoBehaviour
 
     private bool SwitcherPacket(int currentColorCode, GameObject currentObject)
     {
+        currentObject.GetComponent<InfoPacket>().isObjectSelected = true;
+
         if (selectedObjectsHash.Contains(currentObject) == false)
         {
-            enterColorCode = -1;
+            //enterColorCode = -1;
             return true;
         }
         else
         {
-            enterColorCode = -1;
+            //enterColorCode = -1;
             return false;
         }
     }
 
     private bool AddedPacket(int currentColorCode, GameObject currentObject)
     {
+        
+
         if (enterColorCode == currentColorCode)
         {
             if (selectedObjectsHash.Contains(currentObject) == true)
@@ -208,6 +222,7 @@ public class ConnectBeams : MonoBehaviour
 
             else
             {
+                currentObject.GetComponent<InfoPacket>().isObjectSelected = true;
                 return true;
             }
         }

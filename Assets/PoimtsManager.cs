@@ -61,9 +61,9 @@ public class PoimtsManager : MonoBehaviour
 
         for (int i = 0; i < numPointsX_Axis; i++)
         {
-            Vector2 randomOffset = Random.insideUnitSphere/2f;
+            Vector3 randomOffset = Random.insideUnitSphere/2f;
             Vector3 addPos = MatrixPoints[randomSortedYIndex[numCallGetRow], i];
-            rowXPositions[i] = new Vector3(addPos.x + randomOffset.x, addPos.y + randomOffset.y, 0f);
+            rowXPositions[i] = new Vector3(addPos.x + randomOffset.x, addPos.y + randomOffset.y, randomOffset.z*4f);
             
         }
 

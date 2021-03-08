@@ -21,11 +21,8 @@ public class LaunchManager : MonoBehaviour
     }
     private void Start()
     {
-        StartCoroutine(collectCouroutine.LaunchOneType(listPackets[1].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime : 1f, launchPeriod : 0.5f, percentToUse : 1f));
-        StartCoroutine(collectCouroutine.LaunchOneType(listPackets[2].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime : 1f, launchPeriod : 0.5f, percentToUse : 1f));
-        StartCoroutine(collectCouroutine.LaunchOneType(listPackets[3].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime : 1f, launchPeriod : 0.5f, percentToUse : 1f));
-        StartCoroutine(collectCouroutine.LaunchOneType(listPackets[4].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime : 1f, launchPeriod : 0.5f, percentToUse : 1f));
-        StartCoroutine(collectCouroutine.LaunchOneType(listPackets[0].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime : 1f, launchPeriod : 0.5f, percentToUse : 1f));
-        //Debug.Log("Length percent" + 10f + "  " + Mathf.RoundToInt(Mathf.Lerp(0, 10f, 0.5f)));
+        //GameObject[] obj =  { listPackets[0].packetPrefab, listPackets[1].packetPrefab, listPackets[2].packetPrefab, listPackets[3].packetPrefab, listPackets[4].packetPrefab };
+        StartCoroutine(collectCouroutine.LaunchOneType(listPackets[1].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime : 1f, launchPeriod : 1f, percentToUse : 1f, launchDuration: 5f));
+        
     }
 }

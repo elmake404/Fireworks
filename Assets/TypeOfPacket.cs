@@ -8,6 +8,4 @@ public class TypeOfPacket : ScriptableObject
     public GameObject packetPrefab;
     public GameObject fireWork;
     public int colorCode;
-
-
 }
