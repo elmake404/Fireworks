@@ -74,6 +74,7 @@ public class InfoPacket : MonoBehaviour
         {
             if (isDestroy == false)
             {
+                sphereColider.enabled = false;
                 ownParticlesTrail.SetActive(false);
                 GameObject particlesAfter = Instantiate(particleAfterDying);
                 particlesAfter.transform.position = this.transform.position;

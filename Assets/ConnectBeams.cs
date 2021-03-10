@@ -120,6 +120,7 @@ public class ConnectBeams : MonoBehaviour
     private void RayToOnjects()
     {
         Ray ray = sceneCamera.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * 10, Color.yellow);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
@@ -214,17 +215,19 @@ public class ConnectBeams : MonoBehaviour
 
     private bool SelectedColorCode(int currentColorCode, GameObject currentObject)
     {
+        if (selectedObjectsHash.Contains(currentObject) == true)
+        { return false; }
         if (enterColorCode == -1)
         {
             enterColorCode = currentColorCode;
         }
-        else if (selectedObjectsList.Count >= 2)
+        /*else if (selectedObjectsList.Count >= 2)
         {
             if (selectedObjectsList[selectedObjectsList.Count - 2].GetComponent<InfoPacket>()?.selectedType.colorCode == 0)
             {
                 enterColorCode = currentColorCode;
             }
-        }
+        }*/
         
 
         switch (currentColorCode)
@@ -258,7 +261,7 @@ public class ConnectBeams : MonoBehaviour
 
         if (selectedObjectsHash.Contains(currentObject) == false)
         {
-            //enterColorCode = -1;
+            enterColorCode = -1;
             return true;
         }
         else

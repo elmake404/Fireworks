@@ -54,7 +54,7 @@ public class CollectCouroutine : MonoBehaviour
     private IEnumerator PerLaunch(GameObject gameObj, Vector3 launchPos, Vector3 currentTarget, float launchDuration)
     {
         
-        gameObj = GameObject.Instantiate(gameObj);
+        gameObj = Instantiate(gameObj, launchPos, Quaternion.identity);
         for (float i = 0f; i < launchDuration; i += 1f * Time.deltaTime)
         {
             
