@@ -23,6 +23,7 @@ public class InfoPacket : MonoBehaviour
 
     private void OnEnable()
     {
+        LaunchManager.numOfSpawnedPacket += 1;
         isObjectSelected = false;
         isDestroy = false;
         meshRenderer = GetComponent<MeshRenderer>();
@@ -87,5 +88,10 @@ public class InfoPacket : MonoBehaviour
         
         
         yield return null;
+    }
+
+    private void OnDisable()
+    {
+        LaunchManager.numOfSpawnedPacket -= 1;
     }
 }

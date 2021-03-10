@@ -20,7 +20,7 @@ public class CollectCouroutine : MonoBehaviour
         
         for (int i = 0; i < clampedIndex; i++)
         {
-            StartCoroutine(PerLaunch(gameObj,launchPos[Random.Range(0, launchPos.Length-1)].transform.position, targetPos[randomIndexes[i]], launchDuration));
+            StartCoroutine(PerLaunch(gameObj,launchPos[Random.Range(0, launchPos.Length)].transform.position, targetPos[randomIndexes[i]], launchDuration));
             yield return new WaitForSeconds(launchPeriod);
         }
         yield return null;
@@ -45,7 +45,7 @@ public class CollectCouroutine : MonoBehaviour
 
         for (int i = 0; i < clampedIndex; i++)
         {
-            StartCoroutine(PerLaunch(resizedArrayGameObjects[randomIndexesGameObj[i]], launchPos[Random.Range(0, launchPos.Length - 1)].transform.position, targetPos[randomIndexes[i]], launchDuration));
+            StartCoroutine(PerLaunch(resizedArrayGameObjects[randomIndexesGameObj[i]], launchPos[Random.Range(0, launchPos.Length)].transform.position, targetPos[randomIndexes[i]], launchDuration));
             yield return new WaitForSeconds(launchPeriod);
         }
         yield return null;

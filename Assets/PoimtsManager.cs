@@ -40,6 +40,7 @@ public class PoimtsManager : MonoBehaviour
             randomSortedYIndex[i] = i;
         }
 
+
         GetRow();
 
     }

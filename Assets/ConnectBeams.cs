@@ -1,51 +1,79 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//sing UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class ConnectBeams : MonoBehaviour
 {
     private LineRenderer lines;
     private Camera sceneCamera;
     private HashSet<GameObject> selectedObjectsHash;
-    private HashSet<GameObject> selectedSwitchers;
-    private List<GameObject> selectedObjectsList;
+    //private HashSet<GameObject> selectedSwitchers;
+    public List<GameObject> selectedObjectsList;
+    private List<GameObject> selectedCircles;
+    private List<GameObject> circlesInGridList;
+    public GameObject circle;
+    public Transform Canvas;
+    public CanvasManager canvasManager;
+
+    public GameObject gridElements;
+    public GameObject circleOnGrid;
+    private GridLayoutGroup gridLayout;
+    private RectTransform gridRectTransform;
     private GameObject onMouseGameObject;
     public AnimationCurve pointDistributionGraph;
     //private List<Vector3> pointsToRender;
     private int smoothPoint = 4;
     private int enterColorCode;
+    private Vector2 offsetGridElements;
     
     //private bool isFreePoint;
     
     void Start()
     {
         enterColorCode = -1;
-
+        
         GameObject obj = new GameObject();
         onMouseGameObject = obj;
 
         selectedObjectsList = new List<GameObject>();
         selectedObjectsHash = new HashSet<GameObject>();
-        selectedSwitchers = new HashSet<GameObject>();
+        selectedCircles = new List<GameObject>();
+        circlesInGridList = new List<GameObject>();
+        //selectedSwitchers = new HashSet<GameObject>();
         lines = this.GetComponent<LineRenderer>();
         lines.positionCount = 0;
         sceneCamera = FindObjectOfType<Camera>();
+
+        gridLayout = gridElements.GetComponent<GridLayoutGroup>();
+        canvasManager = Canvas.GetComponent<CanvasManager>();
+        float center = Screen.width/2f ;
+        gridRectTransform = gridElements.GetComponent<RectTransform>();
+        offsetGridElements = new Vector2(-gridLayout.cellSize.x / 2f, 0f);
+        gridRectTransform.anchoredPosition = offsetGridElements;
+
+
     }
 
     void Update()
     {
         List<Vector3> pointsToRender = new List<Vector3>();
 
-        //Debug.Log(selectedObjectsHash.Count);
+        //Debug.Log(selectedCircles.Count + "  " + selectedObjectsList.Count + "  " + selectedObjectsHash.Count);
+        //Debug.Log(Screen.width/2f);
 
         if (Input.GetMouseButtonDown(0))
         {
+            RayToOnjects();
+            pointsToRender = InterpolatedCurve();
         }
 
         if (Input.GetMouseButton(0))
         {
             RayToOnjects();
             pointsToRender = InterpolatedCurve();
+            AddSelectedCircle();
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -62,6 +90,20 @@ public class ConnectBeams : MonoBehaviour
             enterColorCode = -1;
             selectedObjectsHash.Clear();
             selectedObjectsList.Clear();
+
+            foreach (GameObject currentObj in selectedCircles)
+            {
+                Destroy(currentObj);
+            }
+            
+            foreach (GameObject currentObj in circlesInGridList)
+            {
+                Destroy(currentObj);
+            }
+            offsetGridElements = new Vector2(-gridLayout.cellSize.x / 2f, 0f);
+            gridRectTransform.anchoredPosition = offsetGridElements;
+            circlesInGridList.Clear();
+            selectedCircles.Clear();
         }
 
         
@@ -85,6 +127,7 @@ public class ConnectBeams : MonoBehaviour
             //Debug.Log(enterColorCode);
             if ( SelectedColorCode(currentColorCode, hit.transform.gameObject) == true)
             {
+                
                 selectedObjectsHash.Add(hit.transform.gameObject);
                 if (selectedObjectsList.Find(obj => obj.GetHashCode() == onMouseGameObject.GetHashCode()) != null)
                 {
@@ -93,6 +136,12 @@ public class ConnectBeams : MonoBehaviour
 
                 selectedObjectsList.Add(hit.transform.gameObject);
 
+                GameObject circleSpawn = Instantiate(circle, Canvas);
+                circleSpawn.SetActive(true);
+                selectedCircles.Add(circleSpawn);
+
+                SpawnCirclesInGridCanvas(hit.transform.gameObject);
+                
             }
             else
             {
@@ -112,6 +161,16 @@ public class ConnectBeams : MonoBehaviour
         if (selectedObjectsList.Find(obj => obj.GetHashCode() == onMouseGameObject.GetHashCode()) == null)
         {
             selectedObjectsList.Add(onMouseGameObject);
+        }
+    }
+
+    private void AddSelectedCircle()
+    {
+        for (int i = 0; i < selectedObjectsHash.Count; i++)
+        {
+            Vector3 worldToScreen = sceneCamera.WorldToScreenPoint(selectedObjectsList[i].transform.position);
+            worldToScreen.z = 0;
+            selectedCircles[i].transform.position = worldToScreen;
         }
     }
 
@@ -231,6 +290,50 @@ public class ConnectBeams : MonoBehaviour
         {
             return false;
         }
+    }
+    
+    private void SpawnCirclesInGridCanvas(GameObject addedObject)
+    {
+        InfoPacket currentInfo = addedObject.GetComponent<InfoPacket>();
+        if (currentInfo.selectedType.colorCode == 0)
+        {
+
+        }
+        else
+        {
+            GameObject currentCircleInstance = Instantiate(circleOnGrid, gridElements.transform);
+            
+            Image currentImage = currentCircleInstance.GetComponent<Image>();
+            currentImage.color = canvasManager.colorsForSelectedCircles[currentInfo.selectedType.colorCode-1];
+            currentCircleInstance.SetActive(true);
+
+            circlesInGridList.Add(currentCircleInstance);
+            if (circlesInGridList.Count > 1)
+            {
+                StartCoroutine(OffsetGridAnimation(gridLayout.cellSize.x));
+            }
+            
+        }
+    }
+
+    private IEnumerator OffsetGridAnimation(float xOffset)
+    {
+        //gridRectTransform.anchoredPosition
+        for (float i = 0f;  i < 1f; i += 3f*Time.deltaTime)
+        {
+            if (circlesInGridList.Count <= 1) 
+            {
+                break; 
+            }
+            float addPosOffset = Mathf.Lerp(0f, xOffset, i)*3f*Time.deltaTime;
+            offsetGridElements -= new Vector2(addPosOffset, 0f);
+
+            //Debug.Log(offsetGridElements);
+            gridRectTransform.anchoredPosition = offsetGridElements;
+            yield return new WaitForEndOfFrame();
+        }
+        
+        yield return null;
     }
 }
     
