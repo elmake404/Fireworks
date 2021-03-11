@@ -348,15 +348,18 @@ public class ConnectBeams : MonoBehaviour
 
     private void SpawnBonusTextAfterDestroy()
     {
+        float addBonusSum = 0f;
         for (int i = 0; i < selectedObjectsHash.Count; i++)
         {
+            addBonusSum += canvasManager.AddBonus;
             Vector3 posDestroyed = selectedObjectsList[i].transform.position;
             Vector3 spawnPos = sceneCamera.WorldToScreenPoint(posDestroyed);
             GameObject obj = Instantiate(textBonusAfterDestroy,Canvas);
             obj.transform.position = spawnPos;
             obj.SetActive(true);
-            
         }
+        Debug.Log(addBonusSum);
+        StartCoroutine(canvasManager.AddExtraBonus(addBonusSum));
     }
 }
     

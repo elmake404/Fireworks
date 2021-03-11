@@ -12,7 +12,6 @@ public class InfoPacket : MonoBehaviour
     [HideInInspector]public float velocityPacket;
     public GameObject ownParticlesTrail;
     public GameObject particleAfterDying;
-    
     private MeshRenderer meshRenderer;
     private SphereCollider sphereColider;
     private TrailRenderer trailRenderer;
@@ -24,6 +23,7 @@ public class InfoPacket : MonoBehaviour
 
     private void OnEnable()
     {
+        
         LaunchManager.numOfSpawnedPacket += 1;
         isObjectSelected = false;
         isDestroy = false;
@@ -75,6 +75,7 @@ public class InfoPacket : MonoBehaviour
         {
             if (isDestroy == false)
             {
+                CanvasManager.InvokeActionSubstractHP();
                 sphereColider.enabled = false;
                 ownParticlesTrail.SetActive(false);
                 GameObject particlesAfter = Instantiate(particleAfterDying);

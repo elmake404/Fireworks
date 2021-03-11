@@ -30,4 +30,6 @@ public class BonusTextAfterDestroy : MonoBehaviour
         Destroy(this.gameObject);
         yield return null;
     }
+
+
 }
