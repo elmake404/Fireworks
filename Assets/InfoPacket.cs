@@ -12,6 +12,7 @@ public class InfoPacket : MonoBehaviour
     [HideInInspector]public float velocityPacket;
     public GameObject ownParticlesTrail;
     public GameObject particleAfterDying;
+    
     private MeshRenderer meshRenderer;
     private SphereCollider sphereColider;
     private TrailRenderer trailRenderer;

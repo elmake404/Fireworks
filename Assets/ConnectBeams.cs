@@ -8,21 +8,21 @@ public class ConnectBeams : MonoBehaviour
 {
     private LineRenderer lines;
     private Camera sceneCamera;
-    private HashSet<GameObject> selectedObjectsHash;
+    [HideInInspector]public HashSet<GameObject> selectedObjectsHash;
     //private HashSet<GameObject> selectedSwitchers;
-    public List<GameObject> selectedObjectsList;
+    [HideInInspector]public List<GameObject> selectedObjectsList;
     private List<GameObject> selectedCircles;
     private List<GameObject> circlesInGridList;
     public GameObject circle;
     public Transform Canvas;
     public CanvasManager canvasManager;
-
     public GameObject gridElements;
     public GameObject circleOnGrid;
     private GridLayoutGroup gridLayout;
     private RectTransform gridRectTransform;
     private GameObject onMouseGameObject;
     public AnimationCurve pointDistributionGraph;
+    public GameObject textBonusAfterDestroy;
     //private List<Vector3> pointsToRender;
     private int smoothPoint = 4;
     private int enterColorCode;
@@ -88,6 +88,9 @@ public class ConnectBeams : MonoBehaviour
                 StartCoroutine(currentObj.GetComponent<InfoPacket>().Destroy());
             }
             enterColorCode = -1;
+
+            SpawnBonusTextAfterDestroy();
+
             selectedObjectsHash.Clear();
             selectedObjectsList.Clear();
 
@@ -104,6 +107,9 @@ public class ConnectBeams : MonoBehaviour
             gridRectTransform.anchoredPosition = offsetGridElements;
             circlesInGridList.Clear();
             selectedCircles.Clear();
+
+            canvasManager.ActionUnSelected();
+            
         }
 
         
@@ -142,6 +148,7 @@ public class ConnectBeams : MonoBehaviour
                 selectedCircles.Add(circleSpawn);
 
                 SpawnCirclesInGridCanvas(hit.transform.gameObject);
+                canvasManager.ActionSelectedObjects();
                 
             }
             else
@@ -337,6 +344,19 @@ public class ConnectBeams : MonoBehaviour
         }
         
         yield return null;
+    }
+
+    private void SpawnBonusTextAfterDestroy()
+    {
+        for (int i = 0; i < selectedObjectsHash.Count; i++)
+        {
+            Vector3 posDestroyed = selectedObjectsList[i].transform.position;
+            Vector3 spawnPos = sceneCamera.WorldToScreenPoint(posDestroyed);
+            GameObject obj = Instantiate(textBonusAfterDestroy,Canvas);
+            obj.transform.position = spawnPos;
+            obj.SetActive(true);
+            
+        }
     }
 }
     
