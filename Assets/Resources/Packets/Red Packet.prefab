@@ -262,10 +262,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FlareRed
       objectReference: {fileID: 0}
-    - target: {fileID: 1401570809896558, guid: f6a42ec60fcc77846b43d478e1ec4734, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4347017912160656, guid: f6a42ec60fcc77846b43d478e1ec4734, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -309,61 +305,6 @@ PrefabInstance:
     - target: {fileID: 4347017912160656, guid: f6a42ec60fcc77846b43d478e1ec4734, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 199897874968250658, guid: f6a42ec60fcc77846b43d478e1ec4734,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 199897874968250658, guid: f6a42ec60fcc77846b43d478e1ec4734,
-        type: 3}
-      propertyPath: m_ReceiveShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 199897874968250658, guid: f6a42ec60fcc77846b43d478e1ec4734,
-        type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 199897874968250658, guid: f6a42ec60fcc77846b43d478e1ec4734,
-        type: 3}
-      propertyPath: m_MaskInteraction
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 199897874968250658, guid: f6a42ec60fcc77846b43d478e1ec4734,
-        type: 3}
-      propertyPath: m_ApplyActiveColorSpace
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 199897874968250658, guid: f6a42ec60fcc77846b43d478e1ec4734,
-        type: 3}
-      propertyPath: m_RenderAlignment
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 199897874968250658, guid: f6a42ec60fcc77846b43d478e1ec4734,
-        type: 3}
-      propertyPath: m_SortMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 199897874968250658, guid: f6a42ec60fcc77846b43d478e1ec4734,
-        type: 3}
-      propertyPath: m_RenderMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 199897874968250658, guid: f6a42ec60fcc77846b43d478e1ec4734,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    - target: {fileID: 199897874968250658, guid: f6a42ec60fcc77846b43d478e1ec4734,
-        type: 3}
-      propertyPath: m_SortingFudge
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 199897874968250658, guid: f6a42ec60fcc77846b43d478e1ec4734,
-        type: 3}
-      propertyPath: m_AllowRoll
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4703834133105388848, guid: f6a42ec60fcc77846b43d478e1ec4734,
         type: 3}

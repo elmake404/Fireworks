@@ -16,11 +16,11 @@ public class ControlSpawn : MonoBehaviour
     void Update()
     {
         float velocity = getInfo.velocityPacket;
-        /*if (velocity > 50f)
+        if (velocity > 50f)
         {
             velocity = 0f;
-        }*/
+        }   
         var emission = currentParticles.emission;
-        emission.rateOverTime = 2f + velocity * 4f;
+        emission.rateOverTime = 2f + velocity * 200f;
     }
 }

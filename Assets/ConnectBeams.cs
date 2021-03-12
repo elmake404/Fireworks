@@ -18,6 +18,7 @@ public class ConnectBeams : MonoBehaviour
     public CanvasManager canvasManager;
     public GameObject gridElements;
     public GameObject circleOnGrid;
+    public GameObject rainbowCircleOnGrid;
     private GridLayoutGroup gridLayout;
     private RectTransform gridRectTransform;
     private GameObject onMouseGameObject;
@@ -307,7 +308,16 @@ public class ConnectBeams : MonoBehaviour
         InfoPacket currentInfo = addedObject.GetComponent<InfoPacket>();
         if (currentInfo.selectedType.colorCode == 0)
         {
+            GameObject currentCircleInstance = Instantiate(rainbowCircleOnGrid, gridElements.transform);
 
+            Image currentImage = currentCircleInstance.GetComponent<Image>();
+            currentCircleInstance.SetActive(true);
+
+            circlesInGridList.Add(currentCircleInstance);
+            if (circlesInGridList.Count > 1)
+            {
+                StartCoroutine(OffsetGridAnimation(gridLayout.cellSize.x));
+            }   
         }
         else
         {
@@ -329,13 +339,13 @@ public class ConnectBeams : MonoBehaviour
     private IEnumerator OffsetGridAnimation(float xOffset)
     {
         //gridRectTransform.anchoredPosition
-        for (float i = 0f;  i < 1f; i += 3f*Time.deltaTime)
+        for (float i = 0f;  i < 1f; i += 6f*Time.deltaTime)
         {
             if (circlesInGridList.Count <= 1) 
             {
                 break; 
             }
-            float addPosOffset = Mathf.Lerp(0f, xOffset, i)*3f*Time.deltaTime;
+            float addPosOffset = Mathf.Lerp(0f, xOffset, i)*6f*Time.deltaTime;
             offsetGridElements -= new Vector2(addPosOffset, 0f);
 
             //Debug.Log(offsetGridElements);

@@ -145,6 +145,7 @@ MonoBehaviour:
   canvasManager: {fileID: 0}
   gridElements: {fileID: 0}
   circleOnGrid: {fileID: 0}
+  rainbowCircleOnGrid: {fileID: 0}
   pointDistributionGraph:
     serializedVersion: 2
     m_Curve:

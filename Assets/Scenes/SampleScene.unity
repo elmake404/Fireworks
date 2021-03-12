@@ -1543,6 +1543,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2027444385 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 775403189608631081, guid: 2c214e25e1ad5b0469ad15b5f487fb90,
+    type: 3}
+  m_PrefabInstance: {fileID: 8178735489142552872}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2034906235
 GameObject:
   m_ObjectHideFlags: 0
@@ -1649,6 +1655,11 @@ PrefabInstance:
       propertyPath: circleOnGrid
       value: 
       objectReference: {fileID: 1629654254}
+    - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
+        type: 3}
+      propertyPath: rainbowCircleOnGrid
+      value: 
+      objectReference: {fileID: 2027444385}
     - target: {fileID: 5034100115553651442, guid: 80f75d044622f02498f6157394e690dc,
         type: 3}
       propertyPath: textBonusAfterDestroy
@@ -1830,7 +1841,7 @@ PrefabInstance:
     - target: {fileID: 3173240913143617692, guid: 2c214e25e1ad5b0469ad15b5f487fb90,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 294.5
+      value: 269
       objectReference: {fileID: 0}
     - target: {fileID: 3173240913143617692, guid: 2c214e25e1ad5b0469ad15b5f487fb90,
         type: 3}
@@ -1965,7 +1976,7 @@ PrefabInstance:
     - target: {fileID: 7893855022884225608, guid: 2c214e25e1ad5b0469ad15b5f487fb90,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 81
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 7893855022884225608, guid: 2c214e25e1ad5b0469ad15b5f487fb90,
         type: 3}

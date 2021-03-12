@@ -23,7 +23,7 @@ public class CanvasManager : MonoBehaviour
     private float maxScore = 999999999;
     float scorecount;
     float scoreMultiplayer = 1f;
-    string formMultiplayer = " X ";
+    string formMultiplayer = " x ";
     public int CapacityHP = 5;
     public float DefaultCapacityHP = 1f;
     private float valueToSubstractHP

@@ -31,7 +31,6 @@ public class LaunchManager : MonoBehaviour
         /*arrayPackets = new List<TypeOfPacket>();
         arrayPackets[1] = redPacket;
         arrayPackets[2] = greenPacket;*/
-        
 
         pointsManager = FindObjectOfType<PoimtsManager>();
         collectCouroutine = FindObjectOfType<CollectCouroutine>();
@@ -43,7 +42,7 @@ public class LaunchManager : MonoBehaviour
         casePackets_2 = new GameObject[] { listPackets[1].packetPrefab, listPackets[2].packetPrefab, listPackets[3].packetPrefab };
         casePackets_3 = new GameObject[] { listPackets[1].packetPrefab, listPackets[2].packetPrefab, listPackets[3].packetPrefab, listPackets[4].packetPrefab };
 
-         SelectDifficult(LevelDifficult.Level_4);
+         SelectDifficult(LevelDifficult.Level_0);
     }
 
     private void Update()
@@ -61,7 +60,6 @@ public class LaunchManager : MonoBehaviour
 
             case LevelDifficult.Level_1:
 
-                Debug.Log("Next");
                 StartCoroutine(LevelDifficult_1(waitPerLaunchMin:1f, waitPerLaunchMax: 2f));
                 break;
 
@@ -97,14 +95,34 @@ public class LaunchManager : MonoBehaviour
 
     IEnumerator LevelDifficult_0(float waitPerLaunchMin, float waitPerLaunchMax)
     {
-        for (int i = 0; i < 15; i++)
-        {
-            StartCoroutine(collectCouroutine.LaunchOneType(listPackets[1].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 1f, launchPeriod: 1f, percentToUse: 0.3f, launchDuration: 10f));
-            yield return new WaitForSeconds(Random.Range(waitPerLaunchMin, waitPerLaunchMax));
-            yield return new WaitUntil(() => numOfSpawnedPacket < 4);
-        }
+
 
         yield return new WaitForSeconds(1f);
+        for (int i = 0; i < 2; i++)
+        {
+            StartCoroutine(collectCouroutine.LaunchOneType(listPackets[1].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
+        }
+
+        yield return new WaitForSeconds(5f);
+        for (int i = 0; i < 2; i++)
+        {
+            StartCoroutine(collectCouroutine.LaunchOneType(listPackets[2].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
+
+        }
+
+        yield return new WaitForSeconds(4f);
+        for (int i = 0; i < 2; i++)
+        {
+            StartCoroutine(collectCouroutine.LaunchOneType(listPackets[3].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
+
+        }
+        yield return new WaitForSeconds(4f);
+        for (int i = 0; i < 2; i++)
+        {
+            StartCoroutine(collectCouroutine.LaunchOneType(listPackets[4].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
+
+        }
+        yield return new WaitForSeconds(4f);
         SelectDifficult(LevelDifficult.Level_1);
 
         yield return null;
@@ -112,14 +130,26 @@ public class LaunchManager : MonoBehaviour
 
     IEnumerator LevelDifficult_1(float waitPerLaunchMin, float waitPerLaunchMax)
     {
-        for (int i = 0; i < 20; i++)
-        {
-            StartCoroutine(collectCouroutine.LaunchOneType(casePackets_1[Random.Range(0,2)], launchPositions, pointsManager.GetRow(), preLaunchTime: 1f, launchPeriod: 1f, percentToUse: Random.Range(0f, 0.3f), launchDuration: 10f));
-            yield return new WaitForSeconds(Random.Range(waitPerLaunchMin, waitPerLaunchMax));
-            yield return new WaitUntil(() => numOfSpawnedPacket < 5);
-        }
 
-        yield return new WaitForSeconds(1f);
+        Debug.Log("Level2Start");
+     
+            StartCoroutine(collectCouroutine.LaunchOneType(listPackets[1].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 1f, launchDuration: 10f));
+
+
+        yield return new WaitForSeconds(5f);
+
+            StartCoroutine(collectCouroutine.LaunchRandomType(casePackets_2, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 1f, launchDuration: 10f));
+
+        yield return new WaitForSeconds(6f);
+
+            StartCoroutine(collectCouroutine.LaunchRandomType(casePackets_2, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 1f, launchDuration: 10f));
+
+        yield return new WaitForSeconds(6f);
+
+            StartCoroutine(collectCouroutine.LaunchRandomType(casePackets_2, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 1f, launchDuration: 10f));
+
+        yield return new WaitForSeconds(6f);
+
         SelectDifficult(LevelDifficult.Level_2);
 
         yield return null;
@@ -129,12 +159,11 @@ public class LaunchManager : MonoBehaviour
     {
         for (int i = 0; i < 20; i++)
         {
-            StartCoroutine(collectCouroutine.LaunchOneType(casePackets_2[Random.Range(0,3)], launchPositions, pointsManager.GetRow(), preLaunchTime: 1f, launchPeriod: 1f, percentToUse: Random.Range(0f, 0.3f), launchDuration: 10f));
-            yield return new WaitForSeconds(Random.Range(waitPerLaunchMin, waitPerLaunchMax));
-            yield return new WaitUntil(() => numOfSpawnedPacket < 5);
+            StartCoroutine(collectCouroutine.LaunchOneType(casePackets_2[Random.Range(0,3)], launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
+            if (i % 3 == 0 & i != 20 & i != 0) { yield return new WaitForSeconds(4f); }
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(4f);
         SelectDifficult(LevelDifficult.Level_3);
 
         yield return null;
@@ -144,17 +173,17 @@ public class LaunchManager : MonoBehaviour
     {
         for (int i = 0; i < 20; i++)
         {
-            if (i % 4 == 0)
+            if (i % 4 == 0 & i!=0)
             {
-                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[0].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 1f, launchPeriod: 1f, percentToUse: 0f, launchDuration: 10f));
+                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[0].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime:0, launchPeriod:0, percentToUse: 0f, launchDuration: 10f));
             }
+            
+            StartCoroutine(collectCouroutine.LaunchOneType(casePackets_3[Random.Range(0,4)], launchPositions, pointsManager.GetRow(), preLaunchTime: 0, launchPeriod: 0, percentToUse: 0f, launchDuration: 10f));
 
-            StartCoroutine(collectCouroutine.LaunchOneType(casePackets_2[Random.Range(0,3)], launchPositions, pointsManager.GetRow(), preLaunchTime: 1f, launchPeriod: 1f, percentToUse: Random.Range(0f, 0.4f), launchDuration: 10f));
-            yield return new WaitForSeconds(Random.Range(waitPerLaunchMin, waitPerLaunchMax));
-            yield return new WaitUntil(() => numOfSpawnedPacket < 5);
+            if (i % 3 == 0 & i != 20 & i!=0) { yield return new WaitForSeconds(5f); }
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(4f);
         SelectDifficult(LevelDifficult.Level_4);
 
         yield return null;
@@ -164,14 +193,14 @@ public class LaunchManager : MonoBehaviour
     {
         for (int i = 0; i < 20; i++)
         {
-            if (i % 4 == 0)
+            if (i % 4 == 0 & i!= 0)
             {
-                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[0].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 1f, launchPeriod: 1f, percentToUse: 0f, launchDuration: 10f));
+                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[0].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
             }
 
-            StartCoroutine(collectCouroutine.LaunchOneType(casePackets_2[Random.Range(0,3)], launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0.5f, percentToUse: Random.Range(0f, 0.5f), launchDuration: 10f));
-            yield return new WaitForSeconds(Random.Range(waitPerLaunchMin, waitPerLaunchMax));
-            yield return new WaitUntil(() => numOfSpawnedPacket < 6);
+            StartCoroutine(collectCouroutine.LaunchOneType(casePackets_3[Random.Range(0, 4)], launchPositions, pointsManager.GetRow(), preLaunchTime: 0, launchPeriod: 0, percentToUse: 0f, launchDuration: 10f));
+
+            if (i % 3 == 0 & i != 20 & i != 0) { yield return new WaitForSeconds(4f); }
         }
 
         yield return new WaitForSeconds(1f);
@@ -184,17 +213,17 @@ public class LaunchManager : MonoBehaviour
     {
         for (int i = 0; i < 30; i++)
         {
-            if (i % 6 == 0)
+            if (i % 4 == 0 & i != 0)
             {
-                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[0].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 1f, launchPeriod: 1f, percentToUse: 0f, launchDuration: 10f));
+                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[0].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
             }
 
-            StartCoroutine(collectCouroutine.LaunchRandomType(casePackets_3, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0.5f, percentToUse: Random.Range(0f, 0.5f), launchDuration: 10f));
-            yield return new WaitForSeconds(Random.Range(waitPerLaunchMin, waitPerLaunchMax));
-            yield return new WaitUntil(() => numOfSpawnedPacket < 6);
+            StartCoroutine(collectCouroutine.LaunchRandomType(casePackets_3, launchPositions, pointsManager.GetRow(), preLaunchTime: 0, launchPeriod: 0, percentToUse: 0f, launchDuration: 10f));
+
+            if (i % 4 == 0 & i != 30 & i != 0) { yield return new WaitForSeconds(6f); }
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(4f);
         SelectDifficult(LevelDifficult.Level_6);
 
 
@@ -205,20 +234,21 @@ public class LaunchManager : MonoBehaviour
     {
         for (int i = 0; i < 40; i++)
         {
-            if (i % 6 == 0)
+            if (i % 4 == 0 & i != 0)
             {
-                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[0].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 1f, launchPeriod: 1f, percentToUse: 0f, launchDuration: 10f));
+                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[0].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
             }
 
-            StartCoroutine(collectCouroutine.LaunchRandomType(casePackets_3, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0.3f, percentToUse: Random.Range(0f, 1f), launchDuration: 5f));
-            yield return new WaitForSeconds(Random.Range(waitPerLaunchMin, waitPerLaunchMax));
-            yield return new WaitUntil(() => numOfSpawnedPacket < 6);
+            StartCoroutine(collectCouroutine.LaunchRandomType(casePackets_3, launchPositions, pointsManager.GetRow(), preLaunchTime: 0, launchPeriod: 0, percentToUse: 0f, launchDuration: 10f));
+
+            if (i % 4 == 0 & i != 30 & i != 0) { yield return new WaitForSeconds(5f); }
         }
 
-        yield return new WaitForSeconds(0f);
-
+        yield return new WaitForSeconds(4f);
+        SelectDifficult(LevelDifficult.Level_0);
 
         yield return null;
     }
 
+    
 }
