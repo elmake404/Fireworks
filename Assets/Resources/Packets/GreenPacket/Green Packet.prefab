@@ -321,6 +321,21 @@ PrefabInstance:
       propertyPath: packet
       value: 
       objectReference: {fileID: 7173023176389399537}
+    - target: {fileID: 4949689532888871157, guid: e577d3b4ea8b475419ad9ffb5471e063,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4949689532888871157, guid: e577d3b4ea8b475419ad9ffb5471e063,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[3]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4949689532888871157, guid: e577d3b4ea8b475419ad9ffb5471e063,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[4]
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 9150396837645573672, guid: e577d3b4ea8b475419ad9ffb5471e063,
         type: 3}
       propertyPath: prewarm

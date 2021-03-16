@@ -47,12 +47,20 @@ MonoBehaviour:
   launchPositions:
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   listPackets:
   - {fileID: 11400000, guid: ad818cdfbe907584bac569e1f018deb1, type: 2}
   - {fileID: 11400000, guid: e1320a90f1e2b1640bdfd3b68712b5b8, type: 2}
   - {fileID: 11400000, guid: 9d286212d1a853149a5427964254dd50, type: 2}
   - {fileID: 11400000, guid: 2e027752cd327e44882afc4b3edb0cf3, type: 2}
   - {fileID: 11400000, guid: fe9fda9a2184020438b8fafaa4b929c9, type: 2}
+  initialPercentOne_1: 5
+  initialPercentOne_2: 5
+  initialPercentOne_3: 5
+  initialPercentOne_4: 5
+  initialPercentRandom: 40
+  initialPercentRandom_plus_One: 40
 --- !u!114 &2098684755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,7 +73,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed0c790c13d03704e96dd41f50af4b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchTime: 2
   fallTime: 5
   speedAtTime:
     serializedVersion: 2

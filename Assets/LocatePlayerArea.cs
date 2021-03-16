@@ -33,7 +33,8 @@ public class LocatePlayerArea : MonoBehaviour
         rectPosXEnd = new Vector3(rectPos.x - (rectPos.x) * 2f, rectPos.y, 0f);
         rectPosYEnd = new Vector3(rectPos.x, centerPos.y - rectPos.y + centerPos.y, 0f);
 
-        numPointsX_Axis = Mathf.RoundToInt(Vector3.Distance(rectPos, rectPosXEnd) /Vector3.Distance(Vector3.zero, new Vector3(intervalPerPoint.x, 0f, 0f)));
+        numPointsX_Axis = 4;
+        //numPointsX_Axis = Mathf.RoundToInt(Vector3.Distance(rectPos, rectPosXEnd) /Vector3.Distance(Vector3.zero, new Vector3(intervalPerPoint.x, 0f, 0f)));
         numPointsY_Axis = Mathf.RoundToInt(Vector3.Distance(rectPos, rectPosYEnd) /Vector3.Distance(Vector3.zero, new Vector3(0f, intervalPerPoint.y, 0f)));
 
         MatrixPoints = new Vector3[numPointsY_Axis, numPointsX_Axis]; 
@@ -41,6 +42,7 @@ public class LocatePlayerArea : MonoBehaviour
         xOffset = (rectPosXEnd - rectPos)/numPointsX_Axis;
         yOffset = (rectPosYEnd - rectPos)/numPointsY_Axis;
         Debug.Log(numPointsY_Axis);
+        Debug.Log(numPointsX_Axis);
         //SpawnPos();
 
         matrixInfo.rectPos = this.rectPos;

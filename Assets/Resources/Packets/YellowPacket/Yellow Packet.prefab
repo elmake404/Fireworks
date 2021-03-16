@@ -306,6 +306,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3824708611689215600, guid: afa318a5e804c61459392c2293b78dda,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3824708611689215600, guid: afa318a5e804c61459392c2293b78dda,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[3]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3824708611689215600, guid: afa318a5e804c61459392c2293b78dda,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[4]
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4703834133105388848, guid: afa318a5e804c61459392c2293b78dda,
         type: 3}
       propertyPath: packet

@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CanvasManager : MonoBehaviour
 {
-    [HideInInspector]public Color[] colorsForSelectedCircles;
+    [HideInInspector] public Color[] colorsForSelectedCircles;
     public Color redPacket;
     public Color greenPacket;
     public Color yellowPacket;
@@ -14,8 +15,20 @@ public class CanvasManager : MonoBehaviour
     public GameObject scoreText;
     public GameObject multiplayerValue;
     public GameObject sliderHP;
+    public GameObject sliderRedHP;
     public GameObject sliderFillArea;
+    public GameObject sliderRedFillArea;
+    public GameObject RestartMenu;
+    public GameObject restartButton;
+    public GameObject newHighScoreText;
+    public GameObject currentScoreText;
+    public GameObject bestScoreText;
+
+    private Button restartButtonComponent;
+    private Text currentScoreTextComponent;
+    private Text bestScoreTextComponent;
     private Slider sliderHPComponent;
+    private Slider sliderRedHPComponent;
     public float AddBonus = 250f;
     private ConnectBeams connectBeamsScript;
     private Text scoreTextComponent;
@@ -25,41 +38,62 @@ public class CanvasManager : MonoBehaviour
     float scoreMultiplayer = 1f;
     string formMultiplayer = " x ";
     public int CapacityHP = 5;
+    private float currentSliderValue;
     public float DefaultCapacityHP = 1f;
+    private bool isSubstractHP;
     private float valueToSubstractHP
     {
         get { return DefaultCapacityHP / CapacityHP; }
     }
     public delegate void SubstracHPValue();
-    public static event  SubstracHPValue OnSubstractHPValue;
+    public static event SubstracHPValue OnSubstractHPValue;
+
+    [HideInInspector] public int bestScore;
 
     private void Awake()
     {
+
         OnSubstractHPValue = null;
     }
 
     void Start()
     {
+        bestScore = PlayerPrefs.GetInt("bestScore");
+
+        RestartMenu.SetActive(false);
+        isSubstractHP = false;
         sliderFillArea.SetActive(true);
         sliderHPComponent = sliderHP.GetComponent<Slider>();
+        sliderRedHPComponent = sliderRedHP.GetComponent<Slider>();
+        currentScoreTextComponent = currentScoreText.GetComponent<Text>();
+        bestScoreTextComponent = bestScoreText.GetComponent<Text>();
+        restartButtonComponent = restartButton.GetComponent<Button>();
+
+        restartButtonComponent.onClick.AddListener(RestartScene);
+        bestScoreTextComponent.text = PlayerPrefs.GetInt("bestScore").ToString();
+
         sliderHPComponent.value = DefaultCapacityHP;
-        colorsForSelectedCircles = new Color[] { redPacket, greenPacket, yellowPacket, bluePacket};
+        colorsForSelectedCircles = new Color[] { redPacket, greenPacket, yellowPacket, bluePacket };
         scoreTextComponent = scoreText.GetComponent<Text>();
         multiplayerValueComponent = multiplayerValue.GetComponent<Text>();
         connectBeamsScript = FindObjectOfType<ConnectBeams>();
         //OnActionMultiplayerScore += ActionSelectedObjects;
         multiplayerValueComponent.text = formMultiplayer + scoreMultiplayer;
-
         OnSubstractHPValue += StartSubstarctHP;
         StartCoroutine(DefaultCounterScore());
-        
+        StartCoroutine(RecoveryHP());
+        StartCoroutine(CallRestartMenu());
+
+
     }
 
 
-    void Update() 
+    void Update()
     {
-        scoreTextComponent.text =  Mathf.RoundToInt(scorecount).ToString();
+        scoreTextComponent.text = Mathf.RoundToInt(scorecount).ToString();
     }
+
+
 
     private IEnumerator DefaultCounterScore()
     {
@@ -108,14 +142,37 @@ public class CanvasManager : MonoBehaviour
         
     }
 
+    public IEnumerator RecoveryHP()
+    {
+        yield return new WaitForSeconds(0.1f);
+        while (true)
+        {
+            if (sliderHPComponent.value < 0.05f)
+            {
+                
+                break;
+            }
+            //yield return new WaitForSeconds(0.05f);
+
+            sliderHPComponent.value += Time.deltaTime / 2f;
+            currentSliderValue = sliderHPComponent.value;
+            yield return new WaitForSeconds(0.1f);
+            yield return new WaitWhile(()=>isSubstractHP==true);
+        }
+        
+        yield return null;
+    }
+
     public IEnumerator SubstractHP()
     {
-        CapacityHP -= 1;
+        //CapacityHP -= 1;
         if (CapacityHP == 0) { yield return null ; }
 
         float substract = valueToSubstractHP / 100;
+        StartCoroutine(SubstractRedHP(1.5f));
         for (int i = 0; i < 100; i++)
         {
+            isSubstractHP = true;
             if (sliderHPComponent.value < 0.05f) 
             {
                 CapacityHP = 0;
@@ -123,9 +180,51 @@ public class CanvasManager : MonoBehaviour
                 break;
             }
             sliderHPComponent.value -= substract;
+            currentSliderValue = sliderHPComponent.value;
             yield return new WaitForFixedUpdate();
         }
+        
+        yield return new WaitForSeconds(3f);
+        isSubstractHP = false;
+        yield return null;
+    }
 
+    public IEnumerator SubstractRedHP(float Delay)
+    {
+
+        
+        sliderRedHPComponent.value = currentSliderValue;
+        yield return new WaitForSeconds(Delay);
+        float substract = valueToSubstractHP / 100;
+        
+        for (int i = 0; i < 100; i++)
+        {
+            if (sliderRedHPComponent.value < 0.05f)
+            {
+                sliderRedFillArea.SetActive(false);
+                break;
+            }
+            sliderRedHPComponent.value -= substract;
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        yield return null;
+    }
+
+    private IEnumerator CallRestartMenu()
+    {
+        yield return new WaitUntil(()=> sliderHPComponent.value<0.05f);
+        currentScoreTextComponent.text = Mathf.RoundToInt(scorecount).ToString();
+
+
+        RestartMenu.SetActive(true);
+        newHighScoreText.SetActive(false);
+        if ((int)scorecount > bestScore)
+        {
+            PlayerPrefs.SetInt("bestScore", Mathf.RoundToInt(scorecount));
+            bestScoreTextComponent.text = Mathf.RoundToInt(scorecount).ToString();
+            newHighScoreText.SetActive(true);
+        }
         yield return null;
     }
 
@@ -144,5 +243,10 @@ public class CanvasManager : MonoBehaviour
         
         scoreMultiplayer = 1f;
         multiplayerValueComponent.text = formMultiplayer + scoreMultiplayer.ToString();
+    }
+
+    private void RestartScene()
+    {
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
     }
 }

@@ -33,4 +33,6 @@ public class GenerateMatrixInfo
     public Vector3 xOffset;
     public Vector3 yOffset;
     public Vector3 rectPos;
+
 }
+

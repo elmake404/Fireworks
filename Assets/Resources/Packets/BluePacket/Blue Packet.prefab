@@ -446,6 +446,21 @@ PrefabInstance:
       propertyPath: packet
       value: 
       objectReference: {fileID: 7173023176389399537}
+    - target: {fileID: 7893876465399621405, guid: 03c122c09ee63564dbe897c1ea234282,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893876465399621405, guid: 03c122c09ee63564dbe897c1ea234282,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[3]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893876465399621405, guid: 03c122c09ee63564dbe897c1ea234282,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[4]
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8645915353805720802, guid: 03c122c09ee63564dbe897c1ea234282,
         type: 3}
       propertyPath: m_LocalPosition.y

@@ -10,44 +10,28 @@ public class CollectCouroutine : MonoBehaviour
     public AnimationCurve speedAtTime;
     public AnimationCurve speedAtFall;
 
-    public IEnumerator LaunchOneType(GameObject gameObj,Transform[] launchPos, Vector3[] targetPos, float preLaunchTime, float launchPeriod, float percentToUse, float launchDuration)
+    public IEnumerator LaunchOneType(GameObject gameObj,Transform[] launchPos, Vector3[] targetPos, float launchDuration)
     {
-        int clampedIndex = Mathf.Clamp(Mathf.RoundToInt(Mathf.Lerp(0, targetPos.Length, percentToUse)), 1, targetPos.Length);
-        int[] randomIndexes = GetRandomIndexes(targetPos.Length);
         
-
-        yield return new WaitForSeconds(preLaunchTime);
-        
-        for (int i = 0; i < clampedIndex; i++)
+        for (int i = 0; i < 4; i++)
         {
-            StartCoroutine(PerLaunch(gameObj,launchPos[Random.Range(0, launchPos.Length)].transform.position, targetPos[randomIndexes[i]], launchDuration));
-            yield return new WaitForSeconds(launchPeriod);
+
+            StartCoroutine(PerLaunch(gameObj,launchPos[i].transform.position, targetPos[i], launchDuration));
+            yield return new WaitForSeconds(0.5f);
         }
         yield return null;
     }
 
-    public IEnumerator LaunchRandomType(GameObject[] gameObj, Transform[] launchPos, Vector3[] targetPos, float preLaunchTime, float launchPeriod, float percentToUse, float launchDuration)
+    public IEnumerator LaunchRandomType(GameObject[] gameObj, Transform[] launchPos, Vector3[] targetPos,  float launchDuration)
     {
-        int clampedIndex = Mathf.Clamp(Mathf.RoundToInt(Mathf.Lerp(0, targetPos.Length, percentToUse)), 1, targetPos.Length);
-        int[] randomIndexes = GetRandomIndexes(targetPos.Length);
-        
-        GameObject[] resizedArrayGameObjects = new GameObject[clampedIndex];
-
-        for (int i = 0; i < clampedIndex; i++)
+        for (int i = 0; i < 4; i++)
         {
-            int currRandomIndex = Random.Range(0, gameObj.Length);
-            resizedArrayGameObjects[i] = gameObj[currRandomIndex];
+
+            StartCoroutine(PerLaunch(gameObj[i], launchPos[i].transform.position, targetPos[i], launchDuration));
+            yield return new WaitForSeconds(0.5f);
         }
 
-        int[] randomIndexesGameObj = GetRandomIndexes(resizedArrayGameObjects.Length);
 
-        yield return new WaitForSeconds(preLaunchTime);
-
-        for (int i = 0; i < clampedIndex; i++)
-        {
-            StartCoroutine(PerLaunch(resizedArrayGameObjects[randomIndexesGameObj[i]], launchPos[Random.Range(0, launchPos.Length)].transform.position, targetPos[randomIndexes[i]], launchDuration));
-            yield return new WaitForSeconds(launchPeriod);
-        }
         yield return null;
     }
 

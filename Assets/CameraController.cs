@@ -9,14 +9,14 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        InvokeRepeating("RandomTarget", 1f, 3f);
+        InvokeRepeating("RandomTarget", 0.1f, 10f);
     }
 
 
     private void LateUpdate()
     {
 
-        Vector3 lerPos = Vector3.MoveTowards(this.transform.position, targetPos, 2f*Time.deltaTime);
+        Vector3 lerPos = Vector3.MoveTowards(this.transform.position, targetPos, Time.deltaTime);
         lerPos.z = -10f;
         this.transform.position = lerPos;
         this.transform.LookAt(pointOfInterst.transform);

@@ -1,16 +1,17 @@
-﻿using System.Collections;
+﻿
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
-public enum LevelDifficult : int
+public enum LaunchPatterns : int
 {
-    Level_0 = 0,
-    Level_1 = 1,
-    Level_2 = 2,
-    Level_3 = 3,
-    Level_4 = 4,
-    Level_5 = 5,
-    Level_6 = 6,
+    One_1 = 0,
+    One_2 = 1,
+    One_3 = 2,
+    One_4 = 3,
+    Random = 4,
+    Random_plus_0 = 5,
+
 }
 
 public class LaunchManager : MonoBehaviour
@@ -21,234 +22,270 @@ public class LaunchManager : MonoBehaviour
     public List<TypeOfPacket> listPackets;
     public static int numOfSpawnedPacket;
 
-    private GameObject[] casePackets_1;
-    private GameObject[] casePackets_2;
-    private GameObject[] casePackets_3;
-
+    private int[] RandomChance;
+    private int[] Chanches;
+    private int[] unEditChanches;
+    public int initialPercentOne_1;
+    public int initialPercentOne_2;
+    public int initialPercentOne_3;
+    public int initialPercentOne_4;
+    public int initialPercentRandom;
+    public int initialPercentRandom_plus_One;
+    [HideInInspector] public bool isGameRunning;
+    private int nextLaunchCounter;
+    private float defaultTime = 5f;
+    private GameObject[] casePackets;
+        
 
     private void Awake()
     {
-        /*arrayPackets = new List<TypeOfPacket>();
-        arrayPackets[1] = redPacket;
-        arrayPackets[2] = greenPacket;*/
+
 
         pointsManager = FindObjectOfType<PoimtsManager>();
         collectCouroutine = FindObjectOfType<CollectCouroutine>();
     }
     private void Start()
     {
+        isGameRunning = true;
+        nextLaunchCounter = 0;
+        Chanches = new int[] { initialPercentOne_1, initialPercentOne_2, initialPercentOne_3, initialPercentOne_4, initialPercentRandom, initialPercentRandom_plus_One };
+        unEditChanches = new int[] { initialPercentOne_1, initialPercentOne_2, initialPercentOne_3, initialPercentOne_4, initialPercentRandom, initialPercentRandom_plus_One };
+        RandomChance = new int[100];
+
+        RewriteRandomArray(RandomChance, Chanches);
+
+
+        casePackets = new GameObject[] { listPackets[1].packetPrefab, listPackets[2].packetPrefab, listPackets[3].packetPrefab, listPackets[4].packetPrefab };
+
         
-        casePackets_1 = new GameObject[] { listPackets[1].packetPrefab, listPackets[2].packetPrefab };
-        casePackets_2 = new GameObject[] { listPackets[1].packetPrefab, listPackets[2].packetPrefab, listPackets[3].packetPrefab };
-        casePackets_3 = new GameObject[] { listPackets[1].packetPrefab, listPackets[2].packetPrefab, listPackets[3].packetPrefab, listPackets[4].packetPrefab };
 
-         SelectDifficult(LevelDifficult.Level_0);
+
+        StartCoroutine(PreGameStart());
+        
     }
 
-    private void Update()
-    {
-        //Debug.Log(numOfSpawnedPacket);
-    }
-    private void SelectDifficult(LevelDifficult difficult)
+
+    private void SelectDifficult(LaunchPatterns difficult)
     {
         switch (difficult)
         {
-            case LevelDifficult.Level_0:
+            case LaunchPatterns.One_1:
 
-                StartCoroutine(LevelDifficult_0(waitPerLaunchMin: 1f, waitPerLaunchMax: 2f));
+                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[1].packetPrefab, launchPositions, pointsManager.GetRow(), 10f));
+
                 break;
 
-            case LevelDifficult.Level_1:
+            case LaunchPatterns.One_2:
 
-                StartCoroutine(LevelDifficult_1(waitPerLaunchMin:1f, waitPerLaunchMax: 2f));
+                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[2].packetPrefab, launchPositions, pointsManager.GetRow(), 10f));
                 break;
 
-            case LevelDifficult.Level_2:
+            case LaunchPatterns.One_3:
 
-                StartCoroutine(LevelDifficult_2(waitPerLaunchMin : 1f, waitPerLaunchMax: 2f));
+                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[3].packetPrefab, launchPositions, pointsManager.GetRow(), 10f));
                 break;
 
-            case LevelDifficult.Level_3:
+            case LaunchPatterns.One_4:
 
-                StartCoroutine(LevelDifficult_3(waitPerLaunchMin: 1f, waitPerLaunchMax: 2f));
+                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[4].packetPrefab, launchPositions, pointsManager.GetRow(), 10f));
                 break;
 
-            case LevelDifficult.Level_4:
+            case LaunchPatterns.Random:
 
-                StartCoroutine(LevelDifficult_4(waitPerLaunchMin: 1f, waitPerLaunchMax: 2f));
+                StartCoroutine(collectCouroutine.LaunchRandomType(GetRandomFourPackets(casePackets), launchPositions, pointsManager.GetRow(), 10f));
                 break;
 
-            case LevelDifficult.Level_5:
+            case LaunchPatterns.Random_plus_0:
 
-                StartCoroutine(LevelDifficult_5(waitPerLaunchMin: 0f, waitPerLaunchMax: 2f));
+                StartCoroutine(collectCouroutine.LaunchRandomType(GetRandomFourPackets(casePackets, listPackets[0].packetPrefab), launchPositions, pointsManager.GetRow(), 10f));
                 break;
 
-            case LevelDifficult.Level_6:
-
-                StartCoroutine(LevelDifficult_6(waitPerLaunchMin: 0f, waitPerLaunchMax: 2f));
-                break;
         }
     }
 
 
-
-
-    IEnumerator LevelDifficult_0(float waitPerLaunchMin, float waitPerLaunchMax)
+    private GameObject[] GetRandomFourPackets(GameObject[] caseObjects, GameObject rainbowObject = null)
     {
-
-
-        yield return new WaitForSeconds(1f);
-        for (int i = 0; i < 2; i++)
+        GameObject[] copyCaseObjects = caseObjects;
+        
+        int randomIndexInCase = Random.Range(0, copyCaseObjects.Length - 1);
+        int randomIndex = randomIndexInCase;
+        
+        if (rainbowObject != null)
         {
-            StartCoroutine(collectCouroutine.LaunchOneType(listPackets[1].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
-        }
-
-        yield return new WaitForSeconds(5f);
-        for (int i = 0; i < 2; i++)
-        {
-            StartCoroutine(collectCouroutine.LaunchOneType(listPackets[2].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
-
-        }
-
-        yield return new WaitForSeconds(4f);
-        for (int i = 0; i < 2; i++)
-        {
-            StartCoroutine(collectCouroutine.LaunchOneType(listPackets[3].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
-
-        }
-        yield return new WaitForSeconds(4f);
-        for (int i = 0; i < 2; i++)
-        {
-            StartCoroutine(collectCouroutine.LaunchOneType(listPackets[4].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
-
-        }
-        yield return new WaitForSeconds(4f);
-        SelectDifficult(LevelDifficult.Level_1);
-
-        yield return null;
-    }
-
-    IEnumerator LevelDifficult_1(float waitPerLaunchMin, float waitPerLaunchMax)
-    {
-
-        Debug.Log("Level2Start");
-     
-            StartCoroutine(collectCouroutine.LaunchOneType(listPackets[1].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 1f, launchDuration: 10f));
-
-
-        yield return new WaitForSeconds(5f);
-
-            StartCoroutine(collectCouroutine.LaunchRandomType(casePackets_2, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 1f, launchDuration: 10f));
-
-        yield return new WaitForSeconds(6f);
-
-            StartCoroutine(collectCouroutine.LaunchRandomType(casePackets_2, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 1f, launchDuration: 10f));
-
-        yield return new WaitForSeconds(6f);
-
-            StartCoroutine(collectCouroutine.LaunchRandomType(casePackets_2, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 1f, launchDuration: 10f));
-
-        yield return new WaitForSeconds(6f);
-
-        SelectDifficult(LevelDifficult.Level_2);
-
-        yield return null;
-    }
-    
-    IEnumerator LevelDifficult_2(float waitPerLaunchMin, float waitPerLaunchMax)
-    {
-        for (int i = 0; i < 20; i++)
-        {
-            StartCoroutine(collectCouroutine.LaunchOneType(casePackets_2[Random.Range(0,3)], launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
-            if (i % 3 == 0 & i != 20 & i != 0) { yield return new WaitForSeconds(4f); }
-        }
-
-        yield return new WaitForSeconds(4f);
-        SelectDifficult(LevelDifficult.Level_3);
-
-        yield return null;
-    }
-    
-    IEnumerator LevelDifficult_3(float waitPerLaunchMin, float waitPerLaunchMax)
-    {
-        for (int i = 0; i < 20; i++)
-        {
-            if (i % 4 == 0 & i!=0)
+            while (randomIndex != randomIndexInCase)
             {
-                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[0].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime:0, launchPeriod:0, percentToUse: 0f, launchDuration: 10f));
+                randomIndex = Random.Range(0, 4);
             }
             
-            StartCoroutine(collectCouroutine.LaunchOneType(casePackets_3[Random.Range(0,4)], launchPositions, pointsManager.GetRow(), preLaunchTime: 0, launchPeriod: 0, percentToUse: 0f, launchDuration: 10f));
-
-            if (i % 3 == 0 & i != 20 & i!=0) { yield return new WaitForSeconds(5f); }
         }
+        GameObject[] outGameobjects = new GameObject[4];
 
-        yield return new WaitForSeconds(4f);
-        SelectDifficult(LevelDifficult.Level_4);
-
-        yield return null;
-    }    
-
-    IEnumerator LevelDifficult_4(float waitPerLaunchMin, float waitPerLaunchMax)
-    {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 4; i++)
         {
-            if (i % 4 == 0 & i!= 0)
+            if (rainbowObject != null & i == randomIndex)
             {
-                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[0].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
+                outGameobjects[i] = rainbowObject;
+            }
+            else
+            {
+
+                
+                outGameobjects[i] = copyCaseObjects[Random.Range(0,copyCaseObjects.Length-1)];
+                copyCaseObjects = DeleteAnotherElementArray(randomIndexInCase, copyCaseObjects);
             }
 
-            StartCoroutine(collectCouroutine.LaunchOneType(casePackets_3[Random.Range(0, 4)], launchPositions, pointsManager.GetRow(), preLaunchTime: 0, launchPeriod: 0, percentToUse: 0f, launchDuration: 10f));
-
-            if (i % 3 == 0 & i != 20 & i != 0) { yield return new WaitForSeconds(4f); }
         }
 
-        yield return new WaitForSeconds(1f);
-        SelectDifficult(LevelDifficult.Level_5);
+        return outGameobjects;
+    }
+
+    private void RewriteRandomArray(int[] array, int[] ArrayChanches)
+    {
+
+        int step = 0;
+        for (int i = 0; i < ArrayChanches.Length; i++)
+        {
+            for (int j = 0; j < ArrayChanches[i]; j++)
+            {
+
+                array[step] = i;
+                step++;
+
+
+            }
+        }
+
+
+    }
+
+    private void ChangeChanceProportion(int usedIndexChance, int[] ArrayChanches, int step = 1)
+    {
+        int calcNewValue = ArrayChanches[usedIndexChance] - (ArrayChanches.Length - 1) * step;
+        ArrayChanches[usedIndexChance] = Mathf.Clamp(calcNewValue, 0, 100);
+
+        int numPlus = ArrayChanches.Length - 1;
+
+        if (calcNewValue < 0)
+        {
+            numPlus = ArrayChanches.Length - Mathf.Abs(calcNewValue) - 1;
+        }
+
+
+        string text = "";
+        for (int i = 0; i < ArrayChanches.Length; i++)
+        {
+            if (i == usedIndexChance)
+            {
+                continue;
+            }
+            else
+            {
+                if (numPlus == 0) { break; }
+                ArrayChanches[i] += step;
+                numPlus--;
+            }
+
+            text += " " + ArrayChanches[i];
+        }
+
+    }
+
+    private int GetIndexInRandom()
+    {
+        int random = Random.Range(0, 99);
+        int selectRandomInArray = RandomChance[random];
+        ChangeChanceProportion(selectRandomInArray, Chanches);
+        RewriteRandomArray(RandomChance, Chanches);
+        return selectRandomInArray;
+    }
+
+
+    private IEnumerator PreGameStart()
+    {
+        yield return new WaitForSeconds(3f);
+        SelectDifficult(LaunchPatterns.One_1);
+
+        yield return new WaitForSeconds(6f);
+        SelectDifficult(LaunchPatterns.One_1);
+
+        yield return new WaitForSeconds(5f);
+        SelectDifficult(LaunchPatterns.One_2);
+
+        yield return new WaitForSeconds(4f);
+        SelectDifficult(LaunchPatterns.One_3);
+
+        yield return new WaitForSeconds(4f);
+        SelectDifficult(LaunchPatterns.One_4);
+
+        yield return new WaitForSeconds(4f);
+        SelectDifficult(LaunchPatterns.Random);
+
+        yield return new WaitForSeconds(3f);
+        SelectDifficult(LaunchPatterns.Random_plus_0);
+
+        StartCoroutine(GameStart());
 
         yield return null;
     }
 
-    IEnumerator LevelDifficult_5(float waitPerLaunchMin, float waitPerLaunchMax)
+    private IEnumerator GameStart()
     {
-        for (int i = 0; i < 30; i++)
+        yield return new WaitForSeconds(7f);
+        int counterToResetRandom = 0;
+        while (isGameRunning)
         {
-            if (i % 4 == 0 & i != 0)
+            if (counterToResetRandom > 15)
             {
-                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[0].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
+                counterToResetRandom = 0;
+                RewriteRandomArray(RandomChance, unEditChanches);
             }
-
-            StartCoroutine(collectCouroutine.LaunchRandomType(casePackets_3, launchPositions, pointsManager.GetRow(), preLaunchTime: 0, launchPeriod: 0, percentToUse: 0f, launchDuration: 10f));
-
-            if (i % 4 == 0 & i != 30 & i != 0) { yield return new WaitForSeconds(6f); }
+            SelectDifficult((LaunchPatterns)GetIndexInRandom());
+            yield return new WaitForSeconds(GetTimeToNextLaunch());
+            //Debug.Log(counterToResetRandom);
+            counterToResetRandom ++;
         }
-
-        yield return new WaitForSeconds(4f);
-        SelectDifficult(LevelDifficult.Level_6);
-
-
         yield return null;
     }
 
-    IEnumerator LevelDifficult_6(float waitPerLaunchMin, float waitPerLaunchMax)
+    private float GetTimeToNextLaunch()
     {
-        for (int i = 0; i < 40; i++)
+        
+        if (nextLaunchCounter > 3)
         {
-            if (i % 4 == 0 & i != 0)
-            {
-                StartCoroutine(collectCouroutine.LaunchOneType(listPackets[0].packetPrefab, launchPositions, pointsManager.GetRow(), preLaunchTime: 0f, launchPeriod: 0f, percentToUse: 0f, launchDuration: 10f));
-            }
-
-            StartCoroutine(collectCouroutine.LaunchRandomType(casePackets_3, launchPositions, pointsManager.GetRow(), preLaunchTime: 0, launchPeriod: 0, percentToUse: 0f, launchDuration: 10f));
-
-            if (i % 4 == 0 & i != 30 & i != 0) { yield return new WaitForSeconds(5f); }
+            defaultTime -= 0.3f;
+            nextLaunchCounter = 0;
         }
-
-        yield return new WaitForSeconds(4f);
-        SelectDifficult(LevelDifficult.Level_0);
-
-        yield return null;
+        defaultTime = Mathf.Clamp(defaultTime, 2f, 99f);
+        nextLaunchCounter++;
+        return defaultTime;
     }
+    private GameObject[] DeleteAnotherElementArray(int usedIndexElement, GameObject[] elements)
+    {
+        
+        if (elements.Length == 2)
+        {
+            return elements;
+        }
+        else
+        {
+            GameObject[] newElements = new GameObject[elements.Length - 1];
+            int indexToCopy = 0;
 
-    
+            for (int i = 0; i < newElements.Length; i++)
+            {
+                if (i == usedIndexElement)
+                {
+                    indexToCopy++;
+                }
+
+                newElements[i] = elements[indexToCopy];
+                indexToCopy++;
+            }
+            newElements[Random.Range(0, newElements.Length - 1)] = elements[usedIndexElement];
+
+            return newElements;
+        }
+        
+    }
 }

@@ -961,8 +961,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9164535469541409970, guid: 984bb5222740de041ad331ab09292480,
         type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9164535469541409970, guid: 984bb5222740de041ad331ab09292480,
+        type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9164535469541409970, guid: 984bb5222740de041ad331ab09292480,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[3]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9164535469541409970, guid: 984bb5222740de041ad331ab09292480,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[4]
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 984bb5222740de041ad331ab09292480, type: 3}
