@@ -127,7 +127,7 @@ public class ConnectBeams : MonoBehaviour
     private void RayToOnjects()
     {
         Ray ray = sceneCamera.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(ray.origin, ray.direction * 10, Color.yellow);
+        //Debug.DrawRay(ray.origin, ray.direction * 10, Color.yellow);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
@@ -368,7 +368,7 @@ public class ConnectBeams : MonoBehaviour
             obj.transform.position = spawnPos;
             obj.SetActive(true);
         }
-        Debug.Log(addBonusSum);
+        //Debug.Log(addBonusSum);
         StartCoroutine(canvasManager.AddExtraBonus(addBonusSum));
     }
 }

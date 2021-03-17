@@ -50,9 +50,15 @@ public class CanvasManager : MonoBehaviour
 
     [HideInInspector] public int bestScore;
 
+    private static bool isGameStart;
+
     private void Awake()
     {
-
+        if (isGameStart == false)
+        {
+            isGameStart = true;
+            FacebookManager.Instance.GameStart();
+        }
         OnSubstractHPValue = null;
     }
 
@@ -215,7 +221,7 @@ public class CanvasManager : MonoBehaviour
     {
         yield return new WaitUntil(()=> sliderHPComponent.value<0.05f);
         currentScoreTextComponent.text = Mathf.RoundToInt(scorecount).ToString();
-
+        FacebookManager.Instance.LevelFail(0);
 
         RestartMenu.SetActive(true);
         newHighScoreText.SetActive(false);

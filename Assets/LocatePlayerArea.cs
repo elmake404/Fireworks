@@ -23,11 +23,16 @@ public class LocatePlayerArea : MonoBehaviour
     {
         
 
+        
+
+    }
+    private void Start()
+    {
         mainCamera = this.gameObject.GetComponent<Camera>();
-        Vector3 centerPos = new Vector3(0f, 1f ,0f);
+        Vector3 centerPos = new Vector3(0f, 1f, 0f);
 
         Rect onScreenRect = new Rect(Screen.width * ((1f - 0.8f) / 2f), Screen.height * ((1f - 0.5f) / 2f), Screen.width * 0.8f, Screen.height * 0.5f);
-        rectPos = mainCamera.ScreenToWorldPoint( new Vector3( onScreenRect.position.x, 3f*onScreenRect.y, mainCamera.nearClipPlane - this.transform.position.z));
+        rectPos = mainCamera.ScreenToWorldPoint(new Vector3(onScreenRect.position.x, 3f * onScreenRect.y, mainCamera.nearClipPlane - this.transform.position.z));
         rectPos.z = 0f;
 
         rectPosXEnd = new Vector3(rectPos.x - (rectPos.x) * 2f, rectPos.y, 0f);
@@ -35,14 +40,14 @@ public class LocatePlayerArea : MonoBehaviour
 
         numPointsX_Axis = 4;
         //numPointsX_Axis = Mathf.RoundToInt(Vector3.Distance(rectPos, rectPosXEnd) /Vector3.Distance(Vector3.zero, new Vector3(intervalPerPoint.x, 0f, 0f)));
-        numPointsY_Axis = Mathf.RoundToInt(Vector3.Distance(rectPos, rectPosYEnd) /Vector3.Distance(Vector3.zero, new Vector3(0f, intervalPerPoint.y, 0f)));
+        numPointsY_Axis = Mathf.RoundToInt(Vector3.Distance(rectPos, rectPosYEnd) / Vector3.Distance(Vector3.zero, new Vector3(0f, intervalPerPoint.y, 0f)));
 
-        MatrixPoints = new Vector3[numPointsY_Axis, numPointsX_Axis]; 
+        MatrixPoints = new Vector3[numPointsY_Axis, numPointsX_Axis];
 
-        xOffset = (rectPosXEnd - rectPos)/numPointsX_Axis;
-        yOffset = (rectPosYEnd - rectPos)/numPointsY_Axis;
-        Debug.Log(numPointsY_Axis);
-        Debug.Log(numPointsX_Axis);
+        xOffset = (rectPosXEnd - rectPos) / numPointsX_Axis;
+        yOffset = (rectPosYEnd - rectPos) / numPointsY_Axis;
+        //Debug.Log(numPointsY_Axis);
+        //Debug.Log(numPointsX_Axis);
         //SpawnPos();
 
         matrixInfo.rectPos = this.rectPos;
@@ -55,11 +60,10 @@ public class LocatePlayerArea : MonoBehaviour
 
         SceneManager.LoadScene(1, LoadSceneMode.Single);
         Debug.Log(Application.persistentDataPath);
-
     }
 
 
 
 
-    
+
 }
